@@ -1,0 +1,4 @@
+cluster.name: sciqa-cluster
+node.name: sciqa-node-1
+network.host: 0.0.0.0
+discovery.type: single-node
