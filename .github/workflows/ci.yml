@@ -1,0 +1,46 @@
+name: CI
+
+on:
+  push:
+    branches: [main, "feat/**", "fix/**"]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+
+      - name: Install libs
+        run: |
+          pip install --upgrade pip
+          pip install -e libs/schema
+          pip install -e libs/events
+          pip install -e libs/common
+
+      - name: Install dev dependencies
+        run: |
+          pip install ruff mypy pytest pydantic
+
+      - name: Lint (ruff)
+        run: |
+          ruff check libs/ services/ tests/
+
+      - name: Type check (mypy)
+        run: |
+          mypy libs/schema/sciqa_schema/ --ignore-missing-imports
+
+      - name: Run tests
+        run: |
+          pytest tests/ -v --tb=short
