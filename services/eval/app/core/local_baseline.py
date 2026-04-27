@@ -9,6 +9,7 @@ from typing import Any
 
 from pydantic import BaseModel
 from sciqa_schema import EvidenceChunk, GroundingVerdict
+
 from services.query.app.core.local_rag import answer_question_local
 
 

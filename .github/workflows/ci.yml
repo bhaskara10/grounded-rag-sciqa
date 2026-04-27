@@ -9,6 +9,8 @@ on:
 jobs:
   lint-and-test:
     runs-on: ubuntu-latest
+    env:
+      PYTHONPATH: ${{ github.workspace }}
     strategy:
       matrix:
         python-version: ["3.11"]
@@ -28,10 +30,12 @@ jobs:
           pip install -e libs/schema
           pip install -e libs/events
           pip install -e libs/common
+          pip install -e services/query
+          pip install -e services/eval
 
       - name: Install dev dependencies
         run: |
-          pip install ruff mypy pytest pydantic
+          pip install ruff mypy pytest pytest-asyncio pydantic
 
       - name: Lint (ruff)
         run: |

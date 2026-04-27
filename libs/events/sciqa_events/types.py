@@ -20,17 +20,21 @@ gives you a clean async contract and a natural audit trail.
 from __future__ import annotations
 
 import uuid
-from datetime import datetime
-from typing import Annotated, Literal, Union
+from datetime import UTC, datetime
+from typing import Annotated, Literal
 
 from pydantic import BaseModel, Field
+
+
+def utc_now() -> datetime:
+    return datetime.now(UTC)
 
 
 class BaseEvent(BaseModel):
     event_id: str = Field(default_factory=lambda: str(uuid.uuid4()))
     doc_id: str
     version_id: str
-    occurred_at: datetime = Field(default_factory=datetime.utcnow)
+    occurred_at: datetime = Field(default_factory=utc_now)
 
 
 class DocumentUploadedEvent(BaseEvent):
@@ -101,15 +105,13 @@ class SearchProjectionActivatedEvent(BaseEvent):
 
 # Discriminated union for deserialisation
 PipelineEvent = Annotated[
-    Union[
-        DocumentUploadedEvent,
-        DocumentParsedEvent,
-        BodyChunksIndexedEvent,
-        GrobidEnrichmentRequestedEvent,
-        GrobidEnrichmentCompletedEvent,
-        DocumentMetadataReindexedEvent,
-        ReferenceChunksIndexedEvent,
-        SearchProjectionActivatedEvent,
-    ],
+    DocumentUploadedEvent
+    | DocumentParsedEvent
+    | BodyChunksIndexedEvent
+    | GrobidEnrichmentRequestedEvent
+    | GrobidEnrichmentCompletedEvent
+    | DocumentMetadataReindexedEvent
+    | ReferenceChunksIndexedEvent
+    | SearchProjectionActivatedEvent,
     Field(discriminator="event_type"),
 ]

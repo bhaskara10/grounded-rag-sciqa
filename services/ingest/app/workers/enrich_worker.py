@@ -25,8 +25,7 @@ Design notes
 """
 import logging
 
-from sciqa_schema import Document, EnrichmentStatus
-from sciqa_schema.transitions import validate_enrichment_transition
+from sciqa_schema import Document
 
 logger = logging.getLogger(__name__)
 

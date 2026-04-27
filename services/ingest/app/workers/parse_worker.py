@@ -18,8 +18,7 @@ Design notes
 import logging
 from pathlib import Path
 
-from sciqa_schema import Document, ParseStatus
-from sciqa_schema.transitions import validate_parse_transition
+from sciqa_schema import Document
 
 logger = logging.getLogger(__name__)
 

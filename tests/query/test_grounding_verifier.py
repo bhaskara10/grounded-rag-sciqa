@@ -1,4 +1,5 @@
 from sciqa_schema import EvidenceChunk, GeneratedSentence, GroundingVerdict
+
 from services.query.app.core.grounding import GroundingVerifier
 
 

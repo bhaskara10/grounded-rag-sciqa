@@ -8,8 +8,8 @@ from __future__ import annotations
 
 import math
 import re
+from collections.abc import Sequence
 from dataclasses import dataclass
-from typing import Sequence
 
 from pydantic import BaseModel
 from sciqa_schema import EvidenceChunk, GeneratedSentence, GroundingVerdict, VerifiedSentence

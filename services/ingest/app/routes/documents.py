@@ -4,7 +4,6 @@ from typing import Annotated
 
 from fastapi import APIRouter, File, HTTPException, UploadFile, status
 from pydantic import BaseModel
-
 from sciqa_schema import ParseStatus
 
 logger = logging.getLogger(__name__)
@@ -40,7 +39,11 @@ async def upload_document(
     raise HTTPException(status_code=status.HTTP_501_NOT_IMPLEMENTED, detail="not yet implemented")
 
 
-@router.post("/{doc_id}/reingest", response_model=IngestResponse, status_code=status.HTTP_202_ACCEPTED)
+@router.post(
+    "/{doc_id}/reingest",
+    response_model=IngestResponse,
+    status_code=status.HTTP_202_ACCEPTED,
+)
 async def reingest_document(doc_id: str) -> IngestResponse:
     """Force re-parse (e.g. after Docling version upgrade).
 

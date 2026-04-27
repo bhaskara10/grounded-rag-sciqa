@@ -17,12 +17,16 @@ Design rules
 from __future__ import annotations
 
 import uuid
-from datetime import datetime
+from datetime import UTC, datetime
 from typing import Literal
 
 from pydantic import BaseModel, Field
 
 from .enums import ChunkSource, ChunkType, EnrichmentStatus, ParseStatus, ProjectionStatus
+
+
+def utc_now() -> datetime:
+    return datetime.now(UTC)
 
 
 # ── sub-models ────────────────────────────────────────────────────────────────
@@ -140,7 +144,7 @@ class Document(BaseModel):
     grobid_title: str | None = None
     grobid_authors: list[str] = Field(default_factory=list)
     grobid_references: list[Reference] = Field(default_factory=list)
-    grobid_biblio: dict | None = None      # raw TEI bibliographic dict
+    grobid_biblio: dict[str, object] | None = None  # raw TEI bibliographic dict
 
     # resolved / canonical fields — deterministic merge result
     resolved_fields: ResolvedFields | None = None
@@ -166,9 +170,9 @@ class Document(BaseModel):
     has_authors: bool = False
     has_references: bool = False
 
-    created_at: datetime = Field(default_factory=datetime.utcnow)
-    updated_at: datetime = Field(default_factory=datetime.utcnow)
-    metadata: dict = Field(default_factory=dict)
+    created_at: datetime = Field(default_factory=utc_now)
+    updated_at: datetime = Field(default_factory=utc_now)
+    metadata: dict[str, object] = Field(default_factory=dict)
 
 
 class Chunk(BaseModel):
@@ -218,8 +222,8 @@ class Chunk(BaseModel):
     chunker_version: str | None = None
     embedding_model_version: str | None = None
 
-    created_at: datetime = Field(default_factory=datetime.utcnow)
-    metadata: dict = Field(default_factory=dict)
+    created_at: datetime = Field(default_factory=utc_now)
+    metadata: dict[str, object] = Field(default_factory=dict)
 
 
 class SearchProjection(BaseModel):
@@ -247,8 +251,8 @@ class SearchProjection(BaseModel):
     last_error: str | None = None
     last_attempted_at: datetime | None = None
 
-    created_at: datetime = Field(default_factory=datetime.utcnow)
-    updated_at: datetime = Field(default_factory=datetime.utcnow)
+    created_at: datetime = Field(default_factory=utc_now)
+    updated_at: datetime = Field(default_factory=utc_now)
 
 
 class IngestionRun(BaseModel):
@@ -280,5 +284,5 @@ class IngestionRun(BaseModel):
     embedding_model_version: str | None = None
 
     error: str | None = None
-    created_at: datetime = Field(default_factory=datetime.utcnow)
-    metadata: dict = Field(default_factory=dict)
+    created_at: datetime = Field(default_factory=utc_now)
+    metadata: dict[str, object] = Field(default_factory=dict)

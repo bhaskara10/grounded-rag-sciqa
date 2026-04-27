@@ -1,4 +1,5 @@
 from sciqa_schema import EvidenceChunk, GroundingVerdict
+
 from services.query.app.core.local_rag import (
     InMemoryChunkIndex,
     answer_question_local,

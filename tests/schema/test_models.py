@@ -9,7 +9,6 @@ Validates:
 - version fields default to None (populated during ingestion, not at creation)
 - chunk source tagging is preserved
 """
-import pytest
 from sciqa_schema import Chunk, Document, IngestionRun, SearchProjection
 from sciqa_schema.enums import (
     ChunkSource,
