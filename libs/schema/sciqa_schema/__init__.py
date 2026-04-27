@@ -1,4 +1,11 @@
 from .enums import ChunkSource, ChunkType, EnrichmentStatus, ParseStatus, ProjectionStatus
+from .grounding import (
+    EvidenceChunk,
+    GeneratedSentence,
+    GroundingDecision,
+    GroundingVerdict,
+    VerifiedSentence,
+)
 from .models import (
     Chunk,
     Document,
@@ -21,6 +28,8 @@ from .transitions import (
 
 __all__ = [
     "ChunkSource", "ChunkType", "EnrichmentStatus", "ParseStatus", "ProjectionStatus",
+    "EvidenceChunk", "GeneratedSentence", "GroundingDecision", "GroundingVerdict",
+    "VerifiedSentence",
     "Chunk", "Document", "Figure", "IngestionRun", "Reference",
     "ResolvedFields", "ResolutionPolicy", "SearchProjection", "Section", "Span", "Table",
     "InvalidTransitionError",
