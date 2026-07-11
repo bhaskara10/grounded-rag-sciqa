@@ -35,12 +35,28 @@ class GeneratedSentence(BaseModel):
     confidence: float = 0.0
 
 
+class SupportingSpan(BaseModel):
+    """Exact evidence characters that support one answer sentence.
+
+    Offsets index into the text of the chunk named by ``chunk_id``, and
+    ``text`` is the verbatim quote at those offsets — so a client can
+    highlight the supporting passage without re-deriving anything.
+    """
+
+    chunk_id: str
+    start_char: int = Field(ge=0)
+    end_char: int = Field(gt=0)
+    text: str
+    score: float = 0.0
+
+
 class VerifiedSentence(GeneratedSentence):
     """A generated sentence after deterministic grounding checks."""
 
     verdict: GroundingVerdict
     reason: str | None = None
     support_score: float = 0.0
+    supporting_spans: list[SupportingSpan] = Field(default_factory=list)
 
 
 class GroundingDecision(BaseModel):

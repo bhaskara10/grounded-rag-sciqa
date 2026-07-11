@@ -4,6 +4,7 @@ from .grounding import (
     GeneratedSentence,
     GroundingDecision,
     GroundingVerdict,
+    SupportingSpan,
     VerifiedSentence,
 )
 from .models import (
@@ -29,7 +30,7 @@ from .transitions import (
 __all__ = [
     "ChunkSource", "ChunkType", "EnrichmentStatus", "ParseStatus", "ProjectionStatus",
     "EvidenceChunk", "GeneratedSentence", "GroundingDecision", "GroundingVerdict",
-    "VerifiedSentence",
+    "SupportingSpan", "VerifiedSentence",
     "Chunk", "Document", "Figure", "IngestionRun", "Reference",
     "ResolvedFields", "ResolutionPolicy", "SearchProjection", "Section", "Span", "Table",
     "InvalidTransitionError",

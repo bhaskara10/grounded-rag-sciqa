@@ -28,6 +28,65 @@ def test_supported_sentence_passes_with_retrieved_citation():
     assert decision.sentences[0].verdict == GroundingVerdict.SUPPORTED
 
 
+def test_supported_sentence_carries_verbatim_evidence_span():
+    chunk = _chunk(
+        text=(
+            "Prior work relied on rule-based extraction. "
+            "The proposed method improved F1 by 4.2 points on SciFact."
+        )
+    )
+    decision = GroundingVerifier().verify(
+        [
+            GeneratedSentence(
+                text="The method improved F1 by 4.2 points.",
+                supporting_chunk_ids=["chunk-1"],
+            )
+        ],
+        [chunk],
+    )
+
+    [span] = decision.sentences[0].supporting_spans
+    assert span.chunk_id == "chunk-1"
+    assert span.text == "The proposed method improved F1 by 4.2 points on SciFact."
+    assert chunk.text[span.start_char : span.end_char] == span.text
+
+
+def test_multi_chunk_support_combines_span_coverage():
+    chunks = [
+        _chunk(chunk_id="chunk-1", text="The proposed method improved F1 by 4.2 points."),
+        _chunk(chunk_id="chunk-2", text="All experiments were run on the SciFact benchmark."),
+    ]
+    decision = GroundingVerifier().verify(
+        [
+            GeneratedSentence(
+                text="The method improved F1 by 4.2 points on the SciFact benchmark.",
+                supporting_chunk_ids=["chunk-1", "chunk-2"],
+            )
+        ],
+        chunks,
+    )
+
+    assert decision.abstained is False
+    assert {span.chunk_id for span in decision.sentences[0].supporting_spans} == {
+        "chunk-1",
+        "chunk-2",
+    }
+
+
+def test_unsupported_sentence_has_no_spans():
+    decision = GroundingVerifier().verify(
+        [
+            GeneratedSentence(
+                text="The model was trained on a multilingual legal corpus.",
+                supporting_chunk_ids=["chunk-1"],
+            )
+        ],
+        [_chunk()],
+    )
+
+    assert decision.sentences[0].supporting_spans == []
+
+
 def test_missing_supporting_chunk_ids_forces_abstention():
     decision = GroundingVerifier().verify(
         [GeneratedSentence(text="The method improved F1 by 4.2 points.")],

@@ -7,7 +7,6 @@ extract a cited sentence, and enforce the grounding verifier.
 from __future__ import annotations
 
 import math
-import re
 from collections.abc import Sequence
 from dataclasses import dataclass
 
@@ -15,40 +14,7 @@ from pydantic import BaseModel
 from sciqa_schema import EvidenceChunk, GeneratedSentence, GroundingVerdict, VerifiedSentence
 
 from .grounding import GroundingVerifier
-
-TOKEN_RE = re.compile(r"[a-zA-Z0-9]+(?:[.-][a-zA-Z0-9]+)?%?")
-SENTENCE_SPLIT_RE = re.compile(r"(?<=[.!?])\s+")
-STOPWORDS = {
-    "a",
-    "an",
-    "and",
-    "are",
-    "as",
-    "at",
-    "be",
-    "by",
-    "for",
-    "from",
-    "has",
-    "have",
-    "how",
-    "in",
-    "is",
-    "it",
-    "of",
-    "on",
-    "or",
-    "that",
-    "the",
-    "their",
-    "this",
-    "to",
-    "was",
-    "were",
-    "what",
-    "which",
-    "with",
-}
+from .text import content_tokens, sentences_with_offsets
 
 
 class LocalQAResult(BaseModel):
@@ -126,7 +92,7 @@ class InMemoryChunkIndex:
             return []
 
         allowed_doc_ids = set(doc_ids or [])
-        query_terms = _tokens(query)
+        query_terms = content_tokens(query)
         if not query_terms:
             return []
 
@@ -134,7 +100,7 @@ class InMemoryChunkIndex:
         for chunk in self._chunks:
             if allowed_doc_ids and chunk.doc_id not in allowed_doc_ids:
                 continue
-            score = self._score(query_terms, _tokens(chunk.text))
+            score = self._score(query_terms, content_tokens(chunk.text))
             if score > 0:
                 scored.append(chunk.model_copy(update={"score": score}))
 
@@ -144,7 +110,7 @@ class InMemoryChunkIndex:
     def _document_frequencies(chunks: Sequence[EvidenceChunk]) -> dict[str, int]:
         frequencies: dict[str, int] = {}
         for chunk in chunks:
-            for token in _tokens(chunk.text):
+            for token in content_tokens(chunk.text):
                 frequencies[token] = frequencies.get(token, 0) + 1
         return frequencies
 
@@ -205,11 +171,11 @@ def _select_candidate_sentence(
     question: str,
     retrieved: Sequence[EvidenceChunk],
 ) -> _CandidateSentence | None:
-    query_terms = _tokens(question)
+    query_terms = content_tokens(question)
     candidates: list[_CandidateSentence] = []
     for chunk in retrieved:
         for sentence in _sentences(chunk.text):
-            score = _overlap_score(query_terms, _tokens(sentence)) * chunk.score
+            score = _overlap_score(query_terms, content_tokens(sentence)) * chunk.score
             if score > 0:
                 candidates.append(
                     _CandidateSentence(text=sentence, chunk_id=chunk.chunk_id, score=score)
@@ -231,23 +197,8 @@ def _abstain(reason: str, retrieved: Sequence[EvidenceChunk]) -> LocalQAResult:
 
 
 def _sentences(text: str) -> list[str]:
-    return [sentence.strip() for sentence in SENTENCE_SPLIT_RE.split(text) if sentence.strip()]
-
-
-def _tokens(text: str) -> set[str]:
-    return {
-        token.lower()
-        for token in TOKEN_RE.findall(text)
-        if _is_content_token(token)
-    }
+    return [text[start:end] for start, end in sentences_with_offsets(text)]
 
 
 def _overlap_score(query_terms: set[str], sentence_terms: set[str]) -> float:
     return len(query_terms & sentence_terms) / len(query_terms) if query_terms else 0.0
-
-
-def _is_content_token(token: str) -> bool:
-    normalized = token.lower()
-    return normalized not in STOPWORDS and (
-        len(normalized) > 2 or any(character.isdigit() for character in normalized)
-    )

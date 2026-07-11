@@ -1,8 +1,10 @@
-"""Deterministic grounding verifier.
+"""Deterministic grounding verifier with span-level attribution.
 
 This is intentionally model-agnostic: generation can come from vLLM, OpenAI, or
 an extractive local baseline, but the service only returns an answer after this
-policy accepts every sentence-level attribution.
+policy accepts every sentence-level attribution. For each accepted sentence the
+verifier also localizes the exact evidence characters that support it, so the
+API returns quotable spans, not just chunk IDs.
 """
 from __future__ import annotations
 
@@ -14,49 +16,30 @@ from sciqa_schema import (
     GeneratedSentence,
     GroundingDecision,
     GroundingVerdict,
+    SupportingSpan,
     VerifiedSentence,
 )
 
-TOKEN_RE = re.compile(r"[a-zA-Z0-9]+(?:[.-][a-zA-Z0-9]+)?%?")
-NUMBER_RE = re.compile(r"(?<!\w)\d+(?:\.\d+)?%?(?!\w)")
+from .spans import locate_best_span
+from .text import content_tokens
 
-STOPWORDS = {
-    "a",
-    "an",
-    "and",
-    "are",
-    "as",
-    "at",
-    "be",
-    "by",
-    "for",
-    "from",
-    "has",
-    "have",
-    "in",
-    "is",
-    "it",
-    "of",
-    "on",
-    "or",
-    "that",
-    "the",
-    "their",
-    "this",
-    "to",
-    "was",
-    "were",
-    "with",
-}
+NUMBER_RE = re.compile(r"(?<!\w)\d+(?:\.\d+)?%?(?!\w)")
 
 
 class GroundingVerifier:
     """Enforce sentence-level citations against retrieved chunks."""
 
-    def __init__(self, min_token_overlap: float = 0.35) -> None:
-        if not 0 < min_token_overlap <= 1:
-            raise ValueError("min_token_overlap must be between 0 and 1")
-        self.min_token_overlap = min_token_overlap
+    def __init__(
+        self,
+        min_claim_coverage: float = 0.35,
+        max_span_window_sentences: int = 3,
+    ) -> None:
+        if not 0 < min_claim_coverage <= 1:
+            raise ValueError("min_claim_coverage must be between 0 and 1")
+        if max_span_window_sentences < 1:
+            raise ValueError("max_span_window_sentences must be at least 1")
+        self.min_claim_coverage = min_claim_coverage
+        self.max_span_window_sentences = max_span_window_sentences
 
     def verify(
         self,
@@ -68,8 +51,9 @@ class GroundingVerifier:
         A sentence is supported only when:
         - it names at least one supporting chunk;
         - all supporting chunks were actually retrieved for this request;
-        - its content words overlap enough with the cited evidence;
-        - every numeric claim in the sentence appears in the cited evidence.
+        - every numeric claim in the sentence appears in the cited evidence;
+        - localized spans in the cited chunks jointly cover enough of the
+          sentence's content tokens.
         """
         retrieved_by_id = {chunk.chunk_id: chunk for chunk in retrieved_chunks}
         verified = [
@@ -112,6 +96,10 @@ class GroundingVerifier:
         if unknown_ids:
             return self._unsupported(sentence, supporting_ids, "supporting_chunk_not_retrieved")
 
+        spans, claim_coverage = self._localize_support(
+            sentence.text, supporting_ids, retrieved_by_id
+        )
+
         evidence_text = " ".join(retrieved_by_id[chunk_id].text for chunk_id in supporting_ids)
         missing_numbers = _missing_numbers(sentence.text, evidence_text)
         if missing_numbers:
@@ -119,16 +107,15 @@ class GroundingVerifier:
                 sentence,
                 supporting_ids,
                 "numeric_claim_not_in_evidence",
-                support_score=_token_overlap(sentence.text, evidence_text),
+                support_score=claim_coverage,
             )
 
-        support_score = _token_overlap(sentence.text, evidence_text)
-        if support_score < self.min_token_overlap:
+        if claim_coverage < self.min_claim_coverage:
             return self._unsupported(
                 sentence,
                 supporting_ids,
                 "insufficient_evidence_overlap",
-                support_score=support_score,
+                support_score=claim_coverage,
             )
 
         return VerifiedSentence(
@@ -136,8 +123,48 @@ class GroundingVerifier:
             supporting_chunk_ids=supporting_ids,
             confidence=sentence.confidence,
             verdict=GroundingVerdict.SUPPORTED,
-            support_score=support_score,
+            support_score=claim_coverage,
+            supporting_spans=spans,
         )
+
+    def _localize_support(
+        self,
+        claim: str,
+        supporting_ids: Sequence[str],
+        retrieved_by_id: dict[str, EvidenceChunk],
+    ) -> tuple[list[SupportingSpan], float]:
+        """Locate the best span per cited chunk and their joint claim coverage.
+
+        Coverage is computed over the union of span tokens so a sentence may be
+        supported by evidence split across multiple cited chunks.
+        """
+        claim_tokens = content_tokens(claim)
+        if not claim_tokens:
+            return [], 0.0
+
+        spans: list[SupportingSpan] = []
+        covered_tokens: set[str] = set()
+        for chunk_id in supporting_ids:
+            chunk = retrieved_by_id[chunk_id]
+            located = locate_best_span(
+                claim,
+                chunk.text,
+                max_window_sentences=self.max_span_window_sentences,
+            )
+            if located is None:
+                continue
+            spans.append(
+                SupportingSpan(
+                    chunk_id=chunk_id,
+                    start_char=located.start_char,
+                    end_char=located.end_char,
+                    text=located.text,
+                    score=round(located.score, 4),
+                )
+            )
+            covered_tokens |= claim_tokens & content_tokens(located.text)
+
+        return spans, len(covered_tokens) / len(claim_tokens)
 
     @staticmethod
     def _unsupported(
@@ -160,32 +187,9 @@ def _dedupe(values: Iterable[str]) -> list[str]:
     return list(dict.fromkeys(values))
 
 
-def _tokens(text: str) -> set[str]:
-    return {
-        token.lower()
-        for token in TOKEN_RE.findall(text)
-        if _is_content_token(token)
-    }
-
-
 def _numbers(text: str) -> set[str]:
     return {number.rstrip(".").lower() for number in NUMBER_RE.findall(text)}
 
 
 def _missing_numbers(sentence_text: str, evidence_text: str) -> set[str]:
     return _numbers(sentence_text) - _numbers(evidence_text)
-
-
-def _token_overlap(sentence_text: str, evidence_text: str) -> float:
-    sentence_tokens = _tokens(sentence_text)
-    if not sentence_tokens:
-        return 0.0
-    evidence_tokens = _tokens(evidence_text)
-    return len(sentence_tokens & evidence_tokens) / len(sentence_tokens)
-
-
-def _is_content_token(token: str) -> bool:
-    normalized = token.lower()
-    return normalized not in STOPWORDS and (
-        len(normalized) > 2 or any(character.isdigit() for character in normalized)
-    )
