@@ -20,6 +20,11 @@ STOPWORDS = frozenset(
 )
 
 
+def count_tokens(text: str) -> int:
+    """Total token count including stopwords; used for context budgeting."""
+    return len(TOKEN_RE.findall(text))
+
+
 def is_content_token(token: str) -> bool:
     """Keep tokens that can carry a factual claim; drop glue words."""
     normalized = token.lower()
