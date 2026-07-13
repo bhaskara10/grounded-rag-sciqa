@@ -48,6 +48,7 @@ class PipelineResult(BaseModel):
     abstained: bool
     abstain_reason: str | None = None
     retrieved_chunk_ids: list[str] = Field(default_factory=list)
+    reranked_chunk_ids: list[str] = Field(default_factory=list)
     selected_chunk_ids: list[str] = Field(default_factory=list)
     reranker_scores: list[float] = Field(default_factory=list)
     best_supporting_passages: list[str] = Field(default_factory=list)
@@ -217,6 +218,7 @@ class RagPipeline:
             abstained=decision.abstained,
             abstain_reason=decision.abstain_reason,
             retrieved_chunk_ids=[chunk.chunk_id for chunk in retrieved],
+            reranked_chunk_ids=[chunk.chunk_id for chunk in reranked],
             selected_chunk_ids=[chunk.chunk_id for chunk in selection.chunks],
             reranker_scores=[round(chunk.score, 4) for chunk in reranked],
             best_supporting_passages=[chunk.text for chunk in selection.chunks],
@@ -279,6 +281,7 @@ class RagPipeline:
             abstained=True,
             abstain_reason=reason,
             retrieved_chunk_ids=[chunk.chunk_id for chunk in retrieved],
+            reranked_chunk_ids=[chunk.chunk_id for chunk in reranked],
             reranker_scores=[round(chunk.score, 4) for chunk in reranked],
             best_supporting_passages=[chunk.text for chunk in fallback_passages],
             timings_ms=timings,

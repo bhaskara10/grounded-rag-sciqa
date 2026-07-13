@@ -1,72 +1,101 @@
-"""Evaluation run routes."""
+"""Evaluation run routes.
+
+POST /runs        execute the harness on a dataset + corpus (synchronous)
+GET  /runs        list stored result artifacts
+GET  /runs/{name} return one stored result artifact
+"""
+import json
 import logging
-from typing import Literal
+from pathlib import Path
+from typing import Any
 
 from fastapi import APIRouter, HTTPException, status
 from pydantic import BaseModel
 
+from services.query.app.core.factory import (
+    config_from_env,
+    encoder_from_env,
+    reranker_from_env,
+)
+from services.query.app.core.pipeline import RagPipeline
+
+from ..core.harness import load_corpus, load_examples, run_eval, write_report
+
 logger = logging.getLogger(__name__)
 router = APIRouter()
 
+RESULTS_DIR = Path("results")
+
 
 class RunRequest(BaseModel):
-    dataset_version: str
-    prompt_version: str
-    model_version: str
-    threshold_config_version: str
+    dataset: str
+    corpus: str
+    output_name: str
+    k: int = 5
 
 
-class RetrievalMetrics(BaseModel):
-    precision_at_5: float
-    recall_at_5: float
-    ndcg_at_5: float
-    mrr: float
-    context_precision: float
-    context_recall: float
+class RunSummary(BaseModel):
+    benchmark: str
+    n_questions: int
+    retrieval: dict[str, Any]
+    answer: dict[str, Any]
+    ops: dict[str, Any]
+    artifact: str
 
 
-class QAMetrics(BaseModel):
-    faithfulness: float
-    unsupported_claim_rate: float
-    citation_coverage: float
-    abstention_precision: float
-    answer_rate: float
+@router.post("/", response_model=RunSummary)
+async def execute_run(request: RunRequest) -> RunSummary:
+    """Run the eval harness and persist the result artifact."""
+    dataset_path = Path(request.dataset)
+    corpus_path = Path(request.corpus)
+    if not dataset_path.is_file() or not corpus_path.is_file():
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="dataset or corpus not found"
+        )
+
+    encoder = encoder_from_env()
+    reranker = reranker_from_env()
+    config = config_from_env()
+    corpus = load_corpus(corpus_path)
+    examples = load_examples(dataset_path)
+    pipeline = RagPipeline(corpus, encoder, reranker=reranker, config=config)
+    report = run_eval(
+        pipeline,
+        examples,
+        benchmark=dataset_path.stem,
+        k=request.k,
+        config={
+            "encoder": encoder.name,
+            "reranker": reranker.name,
+            "min_rerank_score": config.min_rerank_score,
+            "n_corpus_chunks": len(corpus),
+        },
+    )
+    artifact = RESULTS_DIR / f"{request.output_name}.json"
+    write_report(report, artifact)
+    logger.info("eval run complete: %s", artifact)
+    return RunSummary(
+        benchmark=report["benchmark"],
+        n_questions=report["config"]["n_questions"],
+        retrieval=report["retrieval"],
+        answer=report["answer"],
+        ops=report["ops"],
+        artifact=str(artifact),
+    )
 
 
-class OpsMetrics(BaseModel):
-    p50_latency_ms: float
-    p95_latency_ms: float
-    p99_latency_ms: float
-    parse_failure_rate: float
-    avg_token_usage: float
-    cache_hit_rate: float
+@router.get("/", response_model=list[str])
+async def list_runs() -> list[str]:
+    if not RESULTS_DIR.is_dir():
+        return []
+    return sorted(path.stem for path in RESULTS_DIR.glob("*.json"))
 
 
-class RunStatus(BaseModel):
-    run_id: str
-    run_type: Literal["retrieval", "qa", "summarization"]
-    status: Literal["pending", "running", "complete", "failed"]
-    retrieval_metrics: RetrievalMetrics | None = None
-    qa_metrics: QAMetrics | None = None
-    ops_metrics: OpsMetrics | None = None
-    passed_regression_gate: bool | None = None
-
-
-@router.post("/retrieval", response_model=RunStatus, status_code=status.HTTP_202_ACCEPTED)
-async def run_retrieval_eval(request: RunRequest) -> RunStatus:
-    raise HTTPException(status_code=status.HTTP_501_NOT_IMPLEMENTED, detail="not yet implemented")
-
-
-@router.post("/qa", response_model=RunStatus, status_code=status.HTTP_202_ACCEPTED)
-async def run_qa_eval(request: RunRequest) -> RunStatus:
-    raise HTTPException(status_code=status.HTTP_501_NOT_IMPLEMENTED, detail="not yet implemented")
-
-
-@router.post("/summarization", response_model=RunStatus, status_code=status.HTTP_202_ACCEPTED)
-async def run_summarization_eval(request: RunRequest) -> RunStatus:
-    raise HTTPException(status_code=status.HTTP_501_NOT_IMPLEMENTED, detail="not yet implemented")
-
-
-@router.get("/{run_id}", response_model=RunStatus)
-async def get_run(run_id: str) -> RunStatus:
-    raise HTTPException(status_code=status.HTTP_501_NOT_IMPLEMENTED, detail="not yet implemented")
+@router.get("/{name}")
+async def get_run(name: str) -> dict[str, Any]:
+    artifact = RESULTS_DIR / f"{name}.json"
+    if not artifact.is_file():
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail=f"no run named '{name}'"
+        )
+    return json.loads(artifact.read_text())

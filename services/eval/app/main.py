@@ -3,23 +3,20 @@ Eval service.
 
 Endpoints
 ---------
-POST /runs/retrieval      run retrieval benchmark
-POST /runs/qa             run QA / grounding benchmark
-POST /runs/summarization  run summarization benchmark
-GET  /runs/{id}           get run status and metrics
+POST /runs        execute the harness on a dataset + corpus
+GET  /runs        list stored result artifacts
+GET  /runs/{name} return one stored result artifact
 
 Three-layer evaluation (tracked separately)
 -------------------------------------------
-Retrieval : Precision@5, Recall@5, nDCG@5, MRR,
-            context precision / context recall (Ragas)
-Answer    : faithfulness, unsupported-claim rate, citation coverage,
-            abstention precision, answer rate (Ragas)
-Ops       : p50/p95/p99 latency, parse failure rate, avg token usage,
-            reranker latency, cache hit rate
+Retrieval : Precision@5, Recall@5, nDCG@5, MRR — for both the RRF-fused
+            ranking and the cross-encoder ranking (reranker lift is visible)
+Answer    : ROUGE-1/2/L, BLEU, METEOR, token F1, groundedness,
+            unsupported-claim rate, abstention precision/recall
+Ops       : p50/p95/p99 latency, per-stage latency, token usage
 
-Regression gate: release only when all three layers pass configured thresholds.
-All runs store: dataset_version, prompt_version, model_version, threshold_config_version
-so results are reproducible.
+Every artifact records the encoder, reranker, thresholds, and corpus size,
+so results are reproducible; scripts/run_eval.py is the CLI entry point.
 """
 import logging
 from contextlib import asynccontextmanager
