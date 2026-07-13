@@ -15,3 +15,9 @@ htmlcov/
 .vscode/
 .DS_Store
 *.log
+
+# local persistent index (built by ingestion)
+index/
+
+# NLTK data downloaded for METEOR
+nltk_data/
