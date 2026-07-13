@@ -6,6 +6,8 @@ dependencies = [
     "fastapi>=0.111",
     "uvicorn[standard]>=0.29",
     "pydantic>=2.0",
+    "numpy>=1.26",
+    "sentence-transformers>=3.0",
     "sciqa-schema",
     "sciqa-events",
     "sciqa-common",

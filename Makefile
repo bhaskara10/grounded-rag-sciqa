@@ -2,8 +2,8 @@
 
 install-dev:
 	pip install -e libs/schema -e libs/events -e libs/common
-	pip install -e services/query -e services/eval
-	pip install pytest pytest-asyncio pydantic ruff mypy
+	pip install -e services/query -e services/eval -e services/ingest
+	pip install pytest pytest-asyncio httpx ruff mypy
 
 test:
 	PYTHONPATH=libs/schema:libs/events:libs/common:. pytest tests/ -v

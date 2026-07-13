@@ -3,24 +3,27 @@ Ingest service.
 
 Endpoints
 ---------
-POST /documents                  upload PDF, trigger ingestion
-POST /documents/{id}/reingest    force re-parse (e.g. after parser upgrade)
-GET  /documents/{id}/status      check parse / enrichment / index status
+POST /documents               upload PDF: parse, chunk, embed, index
+GET  /documents               list indexed documents
+GET  /documents/{id}/status   per-document index status
 
 Ingestion pipeline
 ------------------
-1. Compute SHA-256 — if identical version exists, return existing doc_id (idempotent).
-2. Store raw file in object storage.
-3. Run Docling inline — normalise to internal Document schema, produce chunks.
-4. Embed body/table chunks, write to OpenSearch, emit BodyChunksIndexedEvent.
-5. Publish GrobidEnrichmentRequestedEvent — async enrichment worker picks it up.
-6. Enrichment worker: GROBID -> grobid_* fields -> resolver -> incremental reindex.
+1. Compute SHA-256 — identical bytes return the existing doc_id (idempotent).
+2. Layout-aware parse via PyMuPDF: text blocks in reading order, font-size
+   heading detection, ruled tables extracted as markdown.
+3. Section-aware chunking with page/section/type metadata.
+4. Bi-encoder embedding (MPS/CUDA/CPU auto-select).
+5. Append to the persistent local index shared with the query service.
 """
 import logging
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+
+from services.query.app.core.factory import encoder_from_env, index_dir_from_env
+from services.query.app.core.index_store import LocalIndexStore
 
 from .routes.documents import router as documents_router
 
@@ -31,7 +34,9 @@ logger = logging.getLogger(__name__)
 @asynccontextmanager
 async def lifespan(app: FastAPI):  # type: ignore[type-arg]
     logger.info("ingest-service starting")
-    # TODO: init DB pool, OpenSearch client, object-storage client, task queue
+    app.state.encoder = encoder_from_env()
+    app.state.store = LocalIndexStore(index_dir_from_env())
+    logger.info("index directory: %s", app.state.store.root)
     yield
     logger.info("ingest-service stopping")
 
