@@ -33,6 +33,7 @@ class EvalExample(BaseModel):
     gold_answers: list[str] = Field(default_factory=list)
     gold_evidence_ids: list[str] = Field(default_factory=list)
     unanswerable: bool = False
+    doc_ids: list[str] | None = None  # scope retrieval, e.g. QASPER's per-paper setting
 
 
 def load_examples(path: Path) -> list[EvalExample]:
@@ -82,7 +83,7 @@ def write_report(report: dict[str, Any], output_path: Path) -> None:
 
 
 def _evaluate_one(pipeline: RagPipeline, example: EvalExample, *, k: int) -> dict[str, Any]:
-    result = pipeline.answer(example.question)
+    result = pipeline.answer(example.question, doc_ids=example.doc_ids)
     row: dict[str, Any] = {
         "question_id": example.question_id,
         "unanswerable": example.unanswerable,
