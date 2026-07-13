@@ -1,5 +1,7 @@
 # grounded-rag-sciqa
 
+[![CI](https://github.com/bhaskara10/grounded-rag-sciqa/actions/workflows/ci.yml/badge.svg)](https://github.com/bhaskara10/grounded-rag-sciqa/actions/workflows/ci.yml)
+
 **Grounded RAG for scientific-paper Q&A: every published sentence carries
 verbatim, character-offset evidence spans — or the system abstains.**
 
