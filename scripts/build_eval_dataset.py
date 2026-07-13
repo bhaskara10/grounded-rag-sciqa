@@ -31,7 +31,9 @@ from sciqa_schema import EvidenceChunk  # noqa: E402
 from services.eval.app.core.harness import EvalExample  # noqa: E402
 
 
-def build_corpus(paper_id: str, paper: dict[str, Any]) -> tuple[list[EvidenceChunk], dict[str, str]]:
+def build_corpus(
+    paper_id: str, paper: dict[str, Any]
+) -> tuple[list[EvidenceChunk], dict[str, str]]:
     """One chunk per QASPER paragraph; returns chunks and text -> chunk_id map."""
     chunks: list[EvidenceChunk] = []
     text_to_id: dict[str, str] = {}
@@ -123,7 +125,8 @@ def main() -> int:
             if is_yes_no(qa):
                 continue
             if is_unanswerable(qa):
-                if n_unanswerable + sum(e.unanswerable for e in paper_examples) >= args.n_unanswerable:
+                pending = sum(e.unanswerable for e in paper_examples)
+                if n_unanswerable + pending >= args.n_unanswerable:
                     continue
                 paper_examples.append(
                     EvalExample(

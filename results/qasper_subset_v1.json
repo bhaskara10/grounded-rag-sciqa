@@ -1,0 +1,1672 @@
+{
+  "answer": {
+    "abstention_precision": 0.3158,
+    "abstention_rate": 0.38,
+    "abstention_recall": 0.6,
+    "answered_rate_on_answerable": 0.675,
+    "bleu": 0.0882,
+    "groundedness_proposed": 1.0,
+    "meteor": 0.2799,
+    "n_text_scored": 27,
+    "rouge1": 0.2315,
+    "rouge2": 0.1256,
+    "rougeL": 0.1978,
+    "token_f1": 0.2139,
+    "unsupported_claim_rate_proposed": 0.0,
+    "unsupported_claim_rate_published": 0.0
+  },
+  "benchmark": "qasper_subset_v1",
+  "config": {
+    "dataset": "datasets/eval_qa/qasper_subset_v1.jsonl",
+    "encoder": "sentence-transformers/all-MiniLM-L6-v2",
+    "k": 5,
+    "min_rerank_score": 0.5,
+    "n_corpus_chunks": 823,
+    "n_questions": 50,
+    "rerank_top_k": 12,
+    "reranker": "cross-encoder/ms-marco-MiniLM-L-6-v2",
+    "retrieve_top_k": 50
+  },
+  "created_at": "2026-07-13T21:01:55+00:00",
+  "ops": {
+    "latency_ms": {
+      "mean": 251.8,
+      "p50": 126.1,
+      "p95": 477.85,
+      "p99": 2518.88
+    },
+    "stage_ms_mean": {
+      "rerank_ms": 198.53,
+      "retrieve_ms": 53.04,
+      "verify_ms": 0.11
+    },
+    "tokens": {
+      "answer_mean": 24.0,
+      "evidence_mean": 174.6
+    }
+  },
+  "retrieval": {
+    "fused": {
+      "mrr": 0.5326,
+      "ndcg_at_5": 0.4547,
+      "precision_at_5": 0.165,
+      "recall_at_5": 0.5342
+    },
+    "n_scored": 40,
+    "reranked": {
+      "mrr": 0.6496,
+      "ndcg_at_5": 0.5582,
+      "precision_at_5": 0.2,
+      "recall_at_5": 0.6467
+    }
+  },
+  "rows": [
+    {
+      "abstain_reason": "weak_evidence",
+      "abstained": true,
+      "answer": "",
+      "answer_tokens": 0,
+      "evidence_tokens": 0,
+      "latency_ms": 4303.16,
+      "proposed_sentences": 0,
+      "question_id": "f67b9bda14ec70feba2e0d10c400b2b2025a0a6a",
+      "retrieval": {
+        "fused": {
+          "mrr": 0.0769,
+          "ndcg_at_5": 0.0,
+          "precision_at_5": 0.0,
+          "recall_at_5": 0.0
+        },
+        "reranked": {
+          "mrr": 1.0,
+          "ndcg_at_5": 1.0,
+          "precision_at_5": 0.2,
+          "recall_at_5": 1.0
+        }
+      },
+      "stage_ms": {
+        "rerank_ms": 3906.674,
+        "retrieve_ms": 396.464
+      },
+      "supported_sentences": 0,
+      "unanswerable": false
+    },
+    {
+      "abstain_reason": null,
+      "abstained": false,
+      "answer": "Active learning sharply increases the performance of iteratively trained machine learning models by selectively determining which unlabeled samples should be annotated. The number of samples that are selected for annotation at each iteration of active learning is called the batch size.",
+      "answer_tokens": 41,
+      "evidence_tokens": 351,
+      "latency_ms": 478.839,
+      "proposed_sentences": 2,
+      "question_id": "1cfed6b0c9b5a079a51166209649a987e7553e4e",
+      "retrieval": {
+        "fused": {
+          "mrr": 0.5,
+          "ndcg_at_5": 0.6309,
+          "precision_at_5": 0.2,
+          "recall_at_5": 1.0
+        },
+        "reranked": {
+          "mrr": 1.0,
+          "ndcg_at_5": 1.0,
+          "precision_at_5": 0.2,
+          "recall_at_5": 1.0
+        }
+      },
+      "stage_ms": {
+        "rerank_ms": 188.316,
+        "retrieve_ms": 290.19,
+        "verify_ms": 0.13
+      },
+      "supported_sentences": 2,
+      "text_metrics": {
+        "bleu": 0.0984,
+        "meteor": 0.6321,
+        "rouge1": 0.5333,
+        "rouge2": 0.3448,
+        "rougeL": 0.3571,
+        "token_f1": 0.4667
+      },
+      "unanswerable": false
+    },
+    {
+      "abstain_reason": "weak_evidence",
+      "abstained": true,
+      "answer": "",
+      "answer_tokens": 0,
+      "evidence_tokens": 0,
+      "latency_ms": 476.641,
+      "proposed_sentences": 0,
+      "question_id": "6cd8bad8a031ce6d802ded90f9754088e0c8d653",
+      "retrieval": {
+        "fused": {
+          "mrr": 0.3333,
+          "ndcg_at_5": 0.5,
+          "precision_at_5": 0.2,
+          "recall_at_5": 1.0
+        },
+        "reranked": {
+          "mrr": 1.0,
+          "ndcg_at_5": 1.0,
+          "precision_at_5": 0.2,
+          "recall_at_5": 1.0
+        }
+      },
+      "stage_ms": {
+        "rerank_ms": 380.545,
+        "retrieve_ms": 96.083
+      },
+      "supported_sentences": 0,
+      "unanswerable": false
+    },
+    {
+      "abstain_reason": null,
+      "abstained": false,
+      "answer": "We applied the ranking loss function proposed in deSantos2015 to train our models.",
+      "answer_tokens": 13,
+      "evidence_tokens": 39,
+      "latency_ms": 661.782,
+      "proposed_sentences": 1,
+      "question_id": "30eacb4595014c9c0e5ee9669103d003cfdfe1e5",
+      "retrieval": {
+        "fused": {
+          "mrr": 0.0833,
+          "ndcg_at_5": 0.0,
+          "precision_at_5": 0.0,
+          "recall_at_5": 0.0
+        },
+        "reranked": {
+          "mrr": 0.1667,
+          "ndcg_at_5": 0.0,
+          "precision_at_5": 0.0,
+          "recall_at_5": 0.0
+        }
+      },
+      "stage_ms": {
+        "rerank_ms": 429.719,
+        "retrieve_ms": 231.891,
+        "verify_ms": 0.087
+      },
+      "supported_sentences": 1,
+      "text_metrics": {
+        "bleu": 0.0309,
+        "meteor": 0.0532,
+        "rouge1": 0.0909,
+        "rouge2": 0.0,
+        "rougeL": 0.0909,
+        "token_f1": 0.0909
+      },
+      "unanswerable": false
+    },
+    {
+      "abstain_reason": null,
+      "abstained": false,
+      "answer": "(3) Finally, we combine CNNs and RNNs using a simple voting scheme and achieve new state-of-the-art results on the SemEval 2010 benchmark dataset.",
+      "answer_tokens": 24,
+      "evidence_tokens": 24,
+      "latency_ms": 304.644,
+      "proposed_sentences": 1,
+      "question_id": "0f7867f888109b9e000ef68965df4dde2511a55f",
+      "retrieval": {
+        "fused": {
+          "mrr": 0.5,
+          "ndcg_at_5": 0.6309,
+          "precision_at_5": 0.2,
+          "recall_at_5": 1.0
+        },
+        "reranked": {
+          "mrr": 0.3333,
+          "ndcg_at_5": 0.5,
+          "precision_at_5": 0.2,
+          "recall_at_5": 1.0
+        }
+      },
+      "stage_ms": {
+        "rerank_ms": 75.761,
+        "retrieve_ms": 228.76,
+        "verify_ms": 0.064
+      },
+      "supported_sentences": 1,
+      "text_metrics": {
+        "bleu": 0.0314,
+        "meteor": 0.1466,
+        "rouge1": 0.3279,
+        "rouge2": 0.1017,
+        "rougeL": 0.2295,
+        "token_f1": 0.2295
+      },
+      "unanswerable": false
+    },
+    {
+      "abstain_reason": null,
+      "abstained": false,
+      "answer": "This study investigates two different types of NNs: recurrent neural networks (RNNs) and convolutional neural networks (CNNs) as well as their combination. In this paper, we investigated different features and architectural choices for convolutional and recurrent neural networks for relation classification without using any linguistic features.",
+      "answer_tokens": 46,
+      "evidence_tokens": 260,
+      "latency_ms": 359.684,
+      "proposed_sentences": 2,
+      "question_id": "e2e977d7222654ee8d983fd8ba63b930e9a5a691",
+      "retrieval": {
+        "fused": {
+          "mrr": 0.0526,
+          "ndcg_at_5": 0.0,
+          "precision_at_5": 0.0,
+          "recall_at_5": 0.0
+        },
+        "reranked": {
+          "mrr": 0.0,
+          "ndcg_at_5": 0.0,
+          "precision_at_5": 0.0,
+          "recall_at_5": 0.0
+        }
+      },
+      "stage_ms": {
+        "rerank_ms": 121.157,
+        "retrieve_ms": 238.225,
+        "verify_ms": 0.14
+      },
+      "supported_sentences": 2,
+      "text_metrics": {
+        "bleu": 0.0,
+        "meteor": 0.0685,
+        "rouge1": 0.0408,
+        "rouge2": 0.0,
+        "rougeL": 0.0408,
+        "token_f1": 0.0
+      },
+      "unanswerable": false
+    },
+    {
+      "abstain_reason": "weak_evidence",
+      "abstained": true,
+      "answer": "",
+      "answer_tokens": 0,
+      "evidence_tokens": 0,
+      "latency_ms": 89.62,
+      "proposed_sentences": 0,
+      "question_id": "0cfe0e33fbb100751fc0916001a5a19498ae8cb5",
+      "retrieval": {
+        "fused": {
+          "mrr": 1.0,
+          "ndcg_at_5": 1.0,
+          "precision_at_5": 0.4,
+          "recall_at_5": 1.0
+        },
+        "reranked": {
+          "mrr": 0.5,
+          "ndcg_at_5": 0.6509,
+          "precision_at_5": 0.4,
+          "recall_at_5": 1.0
+        }
+      },
+      "stage_ms": {
+        "rerank_ms": 84.147,
+        "retrieve_ms": 5.462
+      },
+      "supported_sentences": 0,
+      "unanswerable": false
+    },
+    {
+      "abstain_reason": "weak_evidence",
+      "abstained": true,
+      "answer": "",
+      "answer_tokens": 0,
+      "evidence_tokens": 0,
+      "latency_ms": 267.818,
+      "proposed_sentences": 0,
+      "question_id": "e79a5b6b6680bd2f63e9f4adbaae1d7795d81e38",
+      "retrieval": {
+        "fused": {
+          "mrr": 1.0,
+          "ndcg_at_5": 1.0,
+          "precision_at_5": 0.2,
+          "recall_at_5": 1.0
+        },
+        "reranked": {
+          "mrr": 1.0,
+          "ndcg_at_5": 1.0,
+          "precision_at_5": 0.2,
+          "recall_at_5": 1.0
+        }
+      },
+      "stage_ms": {
+        "rerank_ms": 262.962,
+        "retrieve_ms": 4.846
+      },
+      "supported_sentences": 0,
+      "unanswerable": false
+    },
+    {
+      "abstain_reason": "weak_evidence",
+      "abstained": true,
+      "answer": "",
+      "answer_tokens": 0,
+      "evidence_tokens": 0,
+      "latency_ms": 77.11,
+      "proposed_sentences": 0,
+      "question_id": "c7486d039304ca9d50d0571236429f4f6fbcfcf7",
+      "retrieval": {
+        "fused": {
+          "mrr": 0.3333,
+          "ndcg_at_5": 0.5,
+          "precision_at_5": 0.2,
+          "recall_at_5": 1.0
+        },
+        "reranked": {
+          "mrr": 0.3333,
+          "ndcg_at_5": 0.5,
+          "precision_at_5": 0.2,
+          "recall_at_5": 1.0
+        }
+      },
+      "stage_ms": {
+        "rerank_ms": 72.153,
+        "retrieve_ms": 4.946
+      },
+      "supported_sentences": 0,
+      "unanswerable": false
+    },
+    {
+      "abstain_reason": null,
+      "abstained": false,
+      "answer": "For evaluation of the multilingual approach, we use four languages. These datasets are part of SemEval-2016 Challenge Task 5 BIBREF27 , BIBREF28 .",
+      "answer_tokens": 21,
+      "evidence_tokens": 32,
+      "latency_ms": 270.121,
+      "proposed_sentences": 2,
+      "question_id": "f1f1dcc67b3e4d554bfeb508226cdadb3c32d2e9",
+      "retrieval": {
+        "fused": {
+          "mrr": 1.0,
+          "ndcg_at_5": 1.0,
+          "precision_at_5": 0.4,
+          "recall_at_5": 1.0
+        },
+        "reranked": {
+          "mrr": 1.0,
+          "ndcg_at_5": 1.0,
+          "precision_at_5": 0.4,
+          "recall_at_5": 1.0
+        }
+      },
+      "stage_ms": {
+        "rerank_ms": 77.321,
+        "retrieve_ms": 192.644,
+        "verify_ms": 0.096
+      },
+      "supported_sentences": 2,
+      "text_metrics": {
+        "bleu": 0.2801,
+        "meteor": 0.8223,
+        "rouge1": 0.4828,
+        "rouge2": 0.4444,
+        "rougeL": 0.4828,
+        "token_f1": 0.4828
+      },
+      "unanswerable": false
+    },
+    {
+      "abstain_reason": null,
+      "abstained": false,
+      "answer": "RNN outperforms both baselines in all four datasets (see Table TABREF9 ).",
+      "answer_tokens": 11,
+      "evidence_tokens": 112,
+      "latency_ms": 72.676,
+      "proposed_sentences": 1,
+      "question_id": "a103636c8d1dbfa53341133aeb751ffec269415c",
+      "retrieval": {
+        "fused": {
+          "mrr": 0.2,
+          "ndcg_at_5": 0.2372,
+          "precision_at_5": 0.2,
+          "recall_at_5": 0.5
+        },
+        "reranked": {
+          "mrr": 1.0,
+          "ndcg_at_5": 0.8503,
+          "precision_at_5": 0.4,
+          "recall_at_5": 1.0
+        }
+      },
+      "stage_ms": {
+        "rerank_ms": 66.195,
+        "retrieve_ms": 6.336,
+        "verify_ms": 0.057
+      },
+      "supported_sentences": 1,
+      "text_metrics": {
+        "bleu": 0.0375,
+        "meteor": 0.0893,
+        "rouge1": 0.1875,
+        "rouge2": 0.0,
+        "rougeL": 0.1875,
+        "token_f1": 0.0625
+      },
+      "unanswerable": false
+    },
+    {
+      "abstain_reason": "weak_evidence",
+      "abstained": true,
+      "answer": "",
+      "answer_tokens": 0,
+      "evidence_tokens": 0,
+      "latency_ms": 308.575,
+      "proposed_sentences": 0,
+      "question_id": "55139fcfe04ce90aad407e2e5a0067a45f31e07e",
+      "retrieval": {
+        "fused": {
+          "mrr": 0.5,
+          "ndcg_at_5": 0.3869,
+          "precision_at_5": 0.2,
+          "recall_at_5": 0.5
+        },
+        "reranked": {
+          "mrr": 0.25,
+          "ndcg_at_5": 0.2641,
+          "precision_at_5": 0.2,
+          "recall_at_5": 0.5
+        }
+      },
+      "stage_ms": {
+        "rerank_ms": 75.085,
+        "retrieve_ms": 233.478
+      },
+      "supported_sentences": 0,
+      "unanswerable": false
+    },
+    {
+      "abstain_reason": null,
+      "abstained": false,
+      "answer": "With the goal of building a generalizable sentiment analysis model, we used three different training sets as provided in Table TABREF5 . To make the English sentiment analysis model as generalizable as possible, we first start by training with a large dataset that has product reviews for different categories.",
+      "answer_tokens": 48,
+      "evidence_tokens": 280,
+      "latency_ms": 75.663,
+      "proposed_sentences": 2,
+      "question_id": "fbaf060004f196a286fef67593d2d76826f0304e",
+      "retrieval": {
+        "fused": {
+          "mrr": 0.5,
+          "ndcg_at_5": 0.6309,
+          "precision_at_5": 0.2,
+          "recall_at_5": 1.0
+        },
+        "reranked": {
+          "mrr": 1.0,
+          "ndcg_at_5": 1.0,
+          "precision_at_5": 0.2,
+          "recall_at_5": 1.0
+        }
+      },
+      "stage_ms": {
+        "rerank_ms": 70.369,
+        "retrieve_ms": 4.887,
+        "verify_ms": 0.242
+      },
+      "supported_sentences": 2,
+      "text_metrics": {
+        "bleu": 0.0114,
+        "meteor": 0.1429,
+        "rouge1": 0.1515,
+        "rouge2": 0.0,
+        "rougeL": 0.0606,
+        "token_f1": 0.1515
+      },
+      "unanswerable": false
+    },
+    {
+      "abstain_reason": "weak_evidence",
+      "abstained": true,
+      "answer": "",
+      "answer_tokens": 0,
+      "evidence_tokens": 0,
+      "latency_ms": 455.813,
+      "proposed_sentences": 0,
+      "question_id": "d915b401bb96c9f104a0353bef9254672e6f5a47",
+      "retrieval": {
+        "fused": {
+          "mrr": 0.037,
+          "ndcg_at_5": 0.0,
+          "precision_at_5": 0.0,
+          "recall_at_5": 0.0
+        },
+        "reranked": {
+          "mrr": 0.25,
+          "ndcg_at_5": 0.4307,
+          "precision_at_5": 0.2,
+          "recall_at_5": 1.0
+        }
+      },
+      "stage_ms": {
+        "rerank_ms": 232.949,
+        "retrieve_ms": 222.852
+      },
+      "supported_sentences": 0,
+      "unanswerable": false
+    },
+    {
+      "abstain_reason": null,
+      "abstained": false,
+      "answer": "The BLEU score BIBREF34 is commonly used as an evaluation metric in text generation tasks. Experimental evaluation on the RotoWire benchmark shows that our model outperforms competitive baselines in terms of BLEU score and is generally better on qualitative metrics.",
+      "answer_tokens": 40,
+      "evidence_tokens": 407,
+      "latency_ms": 164.062,
+      "proposed_sentences": 2,
+      "question_id": "79a44a68bb57b375d8a57a0a7f522d33476d9f33",
+      "retrieval": {
+        "fused": {
+          "mrr": 1.0,
+          "ndcg_at_5": 0.3392,
+          "precision_at_5": 0.2,
+          "recall_at_5": 0.2
+        },
+        "reranked": {
+          "mrr": 1.0,
+          "ndcg_at_5": 0.3392,
+          "precision_at_5": 0.2,
+          "recall_at_5": 0.2
+        }
+      },
+      "stage_ms": {
+        "rerank_ms": 157.593,
+        "retrieve_ms": 6.065,
+        "verify_ms": 0.183
+      },
+      "supported_sentences": 2,
+      "text_metrics": {
+        "bleu": 0.0092,
+        "meteor": 0.0413,
+        "rouge1": 0.0408,
+        "rouge2": 0.0,
+        "rougeL": 0.0408,
+        "token_f1": 0.0408
+      },
+      "unanswerable": false
+    },
+    {
+      "abstain_reason": "weak_evidence",
+      "abstained": true,
+      "answer": "",
+      "answer_tokens": 0,
+      "evidence_tokens": 0,
+      "latency_ms": 147.61,
+      "proposed_sentences": 0,
+      "question_id": "664db503509b8236bc4d3dc39cebb74498365750",
+      "retrieval": {
+        "fused": {
+          "mrr": 0.0417,
+          "ndcg_at_5": 0.0,
+          "precision_at_5": 0.0,
+          "recall_at_5": 0.0
+        },
+        "reranked": {
+          "mrr": 0.0,
+          "ndcg_at_5": 0.0,
+          "precision_at_5": 0.0,
+          "recall_at_5": 0.0
+        }
+      },
+      "stage_ms": {
+        "rerank_ms": 120.358,
+        "retrieve_ms": 27.24
+      },
+      "supported_sentences": 0,
+      "unanswerable": false
+    },
+    {
+      "abstain_reason": "weak_evidence",
+      "abstained": true,
+      "answer": "",
+      "answer_tokens": 0,
+      "evidence_tokens": 0,
+      "latency_ms": 180.567,
+      "proposed_sentences": 0,
+      "question_id": "218bc82796eb8d91611996979a4a42500131a936",
+      "retrieval": {
+        "fused": {
+          "mrr": 0.5,
+          "ndcg_at_5": 0.4144,
+          "precision_at_5": 0.4,
+          "recall_at_5": 0.5
+        },
+        "reranked": {
+          "mrr": 0.5,
+          "ndcg_at_5": 0.4144,
+          "precision_at_5": 0.4,
+          "recall_at_5": 0.5
+        }
+      },
+      "stage_ms": {
+        "rerank_ms": 175.015,
+        "retrieve_ms": 5.538
+      },
+      "supported_sentences": 0,
+      "unanswerable": false
+    },
+    {
+      "abstain_reason": null,
+      "abstained": false,
+      "answer": "Here, we explain the s2sL approach by considering two-class classification task. Table TABREF14 show the results obtained for proposed s2sL approach in comparison to that of MLP for the tasks of Speech/Music and Neutral/Sad classification, by considering different proportions of training data.",
+      "answer_tokens": 44,
+      "evidence_tokens": 877,
+      "latency_ms": 107.267,
+      "proposed_sentences": 2,
+      "question_id": "b21bc09193699dc9cfad523f3d5542b0b2ff1b8e",
+      "retrieval": {
+        "fused": {
+          "mrr": 1.0,
+          "ndcg_at_5": 0.4693,
+          "precision_at_5": 0.2,
+          "recall_at_5": 0.3333
+        },
+        "reranked": {
+          "mrr": 1.0,
+          "ndcg_at_5": 0.4693,
+          "precision_at_5": 0.2,
+          "recall_at_5": 0.3333
+        }
+      },
+      "stage_ms": {
+        "rerank_ms": 101.019,
+        "retrieve_ms": 5.651,
+        "verify_ms": 0.162
+      },
+      "supported_sentences": 2,
+      "text_metrics": {
+        "bleu": 0.0081,
+        "meteor": 0.0926,
+        "rouge1": 0.0435,
+        "rouge2": 0.0,
+        "rougeL": 0.0435,
+        "token_f1": 0.0435
+      },
+      "unanswerable": false
+    },
+    {
+      "abstain_reason": "weak_evidence",
+      "abstained": true,
+      "answer": "",
+      "answer_tokens": 0,
+      "evidence_tokens": 0,
+      "latency_ms": 147.725,
+      "proposed_sentences": 0,
+      "question_id": "352bc6de5c5068c6c19062bad1b8f644919b1145",
+      "retrieval": {
+        "fused": {
+          "mrr": 0.125,
+          "ndcg_at_5": 0.0,
+          "precision_at_5": 0.0,
+          "recall_at_5": 0.0
+        },
+        "reranked": {
+          "mrr": 0.1429,
+          "ndcg_at_5": 0.0,
+          "precision_at_5": 0.0,
+          "recall_at_5": 0.0
+        }
+      },
+      "stage_ms": {
+        "rerank_ms": 142.317,
+        "retrieve_ms": 5.397
+      },
+      "supported_sentences": 0,
+      "unanswerable": false
+    },
+    {
+      "abstain_reason": "weak_evidence",
+      "abstained": true,
+      "answer": "",
+      "answer_tokens": 0,
+      "evidence_tokens": 0,
+      "latency_ms": 136.702,
+      "proposed_sentences": 0,
+      "question_id": "252a645af9876241fb166e5822992ce17fec6eb6",
+      "stage_ms": {
+        "rerank_ms": 132.323,
+        "retrieve_ms": 4.367
+      },
+      "supported_sentences": 0,
+      "unanswerable": true
+    },
+    {
+      "abstain_reason": null,
+      "abstained": false,
+      "answer": "As a text embedding in our experiments, we use publicly available GloVe word vectors BIBREF16 pre-trained on two datasets: Wikipedia 2014 with Gigaword5 (W+G5) and Common Crawl (CC). We follow BIBREF5 and use pre-trained GloVe word vectors BIBREF16 to initialize the embedding layer (also known as look-up table).",
+      "answer_tokens": 49,
+      "evidence_tokens": 282,
+      "latency_ms": 38.509,
+      "proposed_sentences": 2,
+      "question_id": "ed67359889cf61fa11ee291d6c378cccf83d599d",
+      "retrieval": {
+        "fused": {
+          "mrr": 1.0,
+          "ndcg_at_5": 1.0,
+          "precision_at_5": 0.4,
+          "recall_at_5": 1.0
+        },
+        "reranked": {
+          "mrr": 1.0,
+          "ndcg_at_5": 1.0,
+          "precision_at_5": 0.4,
+          "recall_at_5": 1.0
+        }
+      },
+      "stage_ms": {
+        "rerank_ms": 33.059,
+        "retrieve_ms": 5.149,
+        "verify_ms": 0.146
+      },
+      "supported_sentences": 2,
+      "text_metrics": {
+        "bleu": 0.3713,
+        "meteor": 0.8443,
+        "rouge1": 0.5352,
+        "rouge2": 0.5217,
+        "rougeL": 0.5352,
+        "token_f1": 0.5352
+      },
+      "unanswerable": false
+    },
+    {
+      "abstain_reason": null,
+      "abstained": false,
+      "answer": "We use INLINEFORM0 -fold evaluation protocol with INLINEFORM1 with random dataset split.",
+      "answer_tokens": 12,
+      "evidence_tokens": 53,
+      "latency_ms": 61.234,
+      "proposed_sentences": 1,
+      "question_id": "425bd2ccfd95ead91d8f2b1b1c8ab9fc3446cb82",
+      "retrieval": {
+        "fused": {
+          "mrr": 1.0,
+          "ndcg_at_5": 0.6131,
+          "precision_at_5": 0.2,
+          "recall_at_5": 0.5
+        },
+        "reranked": {
+          "mrr": 1.0,
+          "ndcg_at_5": 0.6131,
+          "precision_at_5": 0.2,
+          "recall_at_5": 0.5
+        }
+      },
+      "stage_ms": {
+        "rerank_ms": 56.133,
+        "retrieve_ms": 4.977,
+        "verify_ms": 0.065
+      },
+      "supported_sentences": 1,
+      "text_metrics": {
+        "bleu": 0.0,
+        "meteor": 0.0,
+        "rouge1": 0.0,
+        "rouge2": 0.0,
+        "rougeL": 0.0,
+        "token_f1": 0.0
+      },
+      "unanswerable": false
+    },
+    {
+      "abstain_reason": null,
+      "abstained": false,
+      "answer": "The performance improvement is especially visible for The NowThisNews dataset and reaches over 15% with respect to the shallow architecture in terms of of accuracy. Our method attempts to model complex relationships between the title of an article and its popularity using novel deep network architecture that, in contrast to the previous approaches, gives highly interpretable results.",
+      "answer_tokens": 57,
+      "evidence_tokens": 206,
+      "latency_ms": 55.286,
+      "proposed_sentences": 2,
+      "question_id": "955de9f7412ba98a0c91998919fa048d339b1d48",
+      "retrieval": {
+        "fused": {
+          "mrr": 1.0,
+          "ndcg_at_5": 1.0,
+          "precision_at_5": 0.2,
+          "recall_at_5": 1.0
+        },
+        "reranked": {
+          "mrr": 0.1667,
+          "ndcg_at_5": 0.0,
+          "precision_at_5": 0.0,
+          "recall_at_5": 0.0
+        }
+      },
+      "stage_ms": {
+        "rerank_ms": 48.746,
+        "retrieve_ms": 6.192,
+        "verify_ms": 0.211
+      },
+      "supported_sentences": 2,
+      "text_metrics": {
+        "bleu": 0.0084,
+        "meteor": 0.1087,
+        "rouge1": 0.0909,
+        "rouge2": 0.0,
+        "rougeL": 0.0606,
+        "token_f1": 0.0909
+      },
+      "unanswerable": false
+    },
+    {
+      "abstain_reason": "weak_evidence",
+      "abstained": true,
+      "answer": "",
+      "answer_tokens": 0,
+      "evidence_tokens": 0,
+      "latency_ms": 68.517,
+      "proposed_sentences": 0,
+      "question_id": "3b371ea554fa6639c76a364060258454e4b931d4",
+      "retrieval": {
+        "fused": {
+          "mrr": 1.0,
+          "ndcg_at_5": 0.6131,
+          "precision_at_5": 0.2,
+          "recall_at_5": 0.5
+        },
+        "reranked": {
+          "mrr": 0.5,
+          "ndcg_at_5": 0.3869,
+          "precision_at_5": 0.2,
+          "recall_at_5": 0.5
+        }
+      },
+      "stage_ms": {
+        "rerank_ms": 60.683,
+        "retrieve_ms": 7.822
+      },
+      "supported_sentences": 0,
+      "unanswerable": false
+    },
+    {
+      "abstain_reason": null,
+      "abstained": false,
+      "answer": "The retrieved articles were published in main news channels, such as Yahoo News, The Guardian or The Washington Post. The articles in this dataset were collected between January and December 2014.",
+      "answer_tokens": 31,
+      "evidence_tokens": 113,
+      "latency_ms": 53.526,
+      "proposed_sentences": 2,
+      "question_id": "ddb23a71113cbc092cbc158066d891cae261e2c6",
+      "retrieval": {
+        "fused": {
+          "mrr": 1.0,
+          "ndcg_at_5": 1.0,
+          "precision_at_5": 0.4,
+          "recall_at_5": 1.0
+        },
+        "reranked": {
+          "mrr": 1.0,
+          "ndcg_at_5": 0.6131,
+          "precision_at_5": 0.2,
+          "recall_at_5": 0.5
+        }
+      },
+      "stage_ms": {
+        "rerank_ms": 47.835,
+        "retrieve_ms": 5.367,
+        "verify_ms": 0.215
+      },
+      "supported_sentences": 2,
+      "text_metrics": {
+        "bleu": 0.3955,
+        "meteor": 0.8534,
+        "rouge1": 0.5909,
+        "rouge2": 0.5714,
+        "rougeL": 0.5909,
+        "token_f1": 0.5909
+      },
+      "unanswerable": false
+    },
+    {
+      "abstain_reason": null,
+      "abstained": false,
+      "answer": "We evaluated the style transfer itself in the following way. Next we move on to evaluating the same model in terms of its performance in the context of style transfer.",
+      "answer_tokens": 30,
+      "evidence_tokens": 272,
+      "latency_ms": 107.434,
+      "proposed_sentences": 2,
+      "question_id": "a66a275a817f980c36e0b67d2e00bd823f63abf8",
+      "stage_ms": {
+        "rerank_ms": 101.184,
+        "retrieve_ms": 5.917,
+        "verify_ms": 0.154
+      },
+      "supported_sentences": 2,
+      "unanswerable": true
+    },
+    {
+      "abstain_reason": "weak_evidence",
+      "abstained": true,
+      "answer": "",
+      "answer_tokens": 0,
+      "evidence_tokens": 0,
+      "latency_ms": 148.692,
+      "proposed_sentences": 0,
+      "question_id": "b6f466e0fdcb310ecd212fd90396d9d13e0c0504",
+      "retrieval": {
+        "fused": {
+          "mrr": 0.0312,
+          "ndcg_at_5": 0.0,
+          "precision_at_5": 0.0,
+          "recall_at_5": 0.0
+        },
+        "reranked": {
+          "mrr": 0.0833,
+          "ndcg_at_5": 0.0,
+          "precision_at_5": 0.0,
+          "recall_at_5": 0.0
+        }
+      },
+      "stage_ms": {
+        "rerank_ms": 121.794,
+        "retrieve_ms": 26.887
+      },
+      "supported_sentences": 0,
+      "unanswerable": false
+    },
+    {
+      "abstain_reason": null,
+      "abstained": false,
+      "answer": "We apply our model to three languages and present a thorough evaluation on both tasks, showing that the model is reliable for a number of error types and style transfer aspects. To conclude this section, our model reliable corrects grammatical, spelling and word order errors on , with more mixed performance on lexical choice errors and some unnecessary paraphrasing of the input.",
+      "answer_tokens": 61,
+      "evidence_tokens": 520,
+      "latency_ms": 143.931,
+      "proposed_sentences": 2,
+      "question_id": "62ea141d0fb342dfb97c69b49d1c978665b93b3c",
+      "retrieval": {
+        "fused": {
+          "mrr": 0.25,
+          "ndcg_at_5": 0.2641,
+          "precision_at_5": 0.2,
+          "recall_at_5": 0.5
+        },
+        "reranked": {
+          "mrr": 1.0,
+          "ndcg_at_5": 0.8772,
+          "precision_at_5": 0.4,
+          "recall_at_5": 1.0
+        }
+      },
+      "stage_ms": {
+        "rerank_ms": 136.059,
+        "retrieve_ms": 7.35,
+        "verify_ms": 0.211
+      },
+      "supported_sentences": 2,
+      "text_metrics": {
+        "bleu": 0.0732,
+        "meteor": 0.4444,
+        "rouge1": 0.1791,
+        "rouge2": 0.1538,
+        "rougeL": 0.1791,
+        "token_f1": 0.1791
+      },
+      "unanswerable": false
+    },
+    {
+      "abstain_reason": null,
+      "abstained": false,
+      "answer": "We present an approach that does both tasks within the same trained model, and only uses regular language parallel data, without requiring error-corrected or style-adapted texts. Our system also does not require parallel data between styles, but leverages the stability of the off-the-shelf supervised NMT to avoid the hassle of training unsupervised NMT systems and making GANs converge.",
+      "answer_tokens": 59,
+      "evidence_tokens": 231,
+      "latency_ms": 125.104,
+      "proposed_sentences": 2,
+      "question_id": "a32c792a0cef03218bf66322245677fc2d5e5a31",
+      "stage_ms": {
+        "rerank_ms": 117.672,
+        "retrieve_ms": 7.002,
+        "verify_ms": 0.252
+      },
+      "supported_sentences": 2,
+      "unanswerable": true
+    },
+    {
+      "abstain_reason": "weak_evidence",
+      "abstained": true,
+      "answer": "",
+      "answer_tokens": 0,
+      "evidence_tokens": 0,
+      "latency_ms": 121.88,
+      "proposed_sentences": 0,
+      "question_id": "0767ca8ff1424f7a811222ca108a33b6411aaa8a",
+      "stage_ms": {
+        "rerank_ms": 115.329,
+        "retrieve_ms": 6.54
+      },
+      "supported_sentences": 0,
+      "unanswerable": true
+    },
+    {
+      "abstain_reason": null,
+      "abstained": false,
+      "answer": "For the evaluation of summaries we use the standard ROGUE metric. For comparison with previous AMR based summarization methods, we report the Recall, Precision and INLINEFORM0 scores for ROGUE-1.",
+      "answer_tokens": 29,
+      "evidence_tokens": 114,
+      "latency_ms": 142.136,
+      "proposed_sentences": 2,
+      "question_id": "e8f969ffd637b82d04d3be28c51f0f3ca6b3883e",
+      "retrieval": {
+        "fused": {
+          "mrr": 1.0,
+          "ndcg_at_5": 1.0,
+          "precision_at_5": 0.2,
+          "recall_at_5": 1.0
+        },
+        "reranked": {
+          "mrr": 1.0,
+          "ndcg_at_5": 1.0,
+          "precision_at_5": 0.2,
+          "recall_at_5": 1.0
+        }
+      },
+      "stage_ms": {
+        "rerank_ms": 134.975,
+        "retrieve_ms": 6.812,
+        "verify_ms": 0.234
+      },
+      "supported_sentences": 2,
+      "text_metrics": {
+        "bleu": 0.2862,
+        "meteor": 0.4605,
+        "rouge1": 0.4898,
+        "rouge2": 0.383,
+        "rougeL": 0.449,
+        "token_f1": 0.4898
+      },
+      "unanswerable": false
+    },
+    {
+      "abstain_reason": null,
+      "abstained": false,
+      "answer": "The rest of the paper is organized as follows. Section SECREF2 contains introduction to AMR, section SECREF3 and SECREF4 contains the datasets and the algorithm used for summary generation respectively.",
+      "answer_tokens": 30,
+      "evidence_tokens": 184,
+      "latency_ms": 94.391,
+      "proposed_sentences": 2,
+      "question_id": "46227b4265f1d300a5ed71bf40822829de662bc2",
+      "retrieval": {
+        "fused": {
+          "mrr": 0.1429,
+          "ndcg_at_5": 0.0,
+          "precision_at_5": 0.0,
+          "recall_at_5": 0.0
+        },
+        "reranked": {
+          "mrr": 0.3333,
+          "ndcg_at_5": 0.5,
+          "precision_at_5": 0.2,
+          "recall_at_5": 1.0
+        }
+      },
+      "stage_ms": {
+        "rerank_ms": 87.435,
+        "retrieve_ms": 6.683,
+        "verify_ms": 0.133
+      },
+      "supported_sentences": 2,
+      "text_metrics": {
+        "bleu": 0.0124,
+        "meteor": 0.0758,
+        "rouge1": 0.0588,
+        "rouge2": 0.0,
+        "rougeL": 0.0588,
+        "token_f1": 0.0588
+      },
+      "unanswerable": false
+    },
+    {
+      "abstain_reason": null,
+      "abstained": false,
+      "answer": "On the other hand most Abstractive methods take advantages of the recent developments in deep learning. Though these methods have recently shown to be competitive with the extractive methods they are still far away from reaching human level quality in summary generation.",
+      "answer_tokens": 42,
+      "evidence_tokens": 363,
+      "latency_ms": 96.811,
+      "proposed_sentences": 2,
+      "question_id": "a6a48de63c1928238b37c2a01c924b852fe752f8",
+      "retrieval": {
+        "fused": {
+          "mrr": 0.0526,
+          "ndcg_at_5": 0.0,
+          "precision_at_5": 0.0,
+          "recall_at_5": 0.0
+        },
+        "reranked": {
+          "mrr": 1.0,
+          "ndcg_at_5": 0.4693,
+          "precision_at_5": 0.2,
+          "recall_at_5": 0.3333
+        }
+      },
+      "stage_ms": {
+        "rerank_ms": 90.898,
+        "retrieve_ms": 5.541,
+        "verify_ms": 0.15
+      },
+      "supported_sentences": 2,
+      "text_metrics": {
+        "bleu": 0.0,
+        "meteor": 0.0575,
+        "rouge1": 0.0,
+        "rouge2": 0.0,
+        "rougeL": 0.0,
+        "token_f1": 0.0
+      },
+      "unanswerable": false
+    },
+    {
+      "abstain_reason": null,
+      "abstained": false,
+      "answer": "To generate the summary we find the words aligned with the sentence in the selected graph and output them in no particular order as the predicted summary. BIBREF18 showed that most of the work in text summarization has been extractive, where sentences are selected from the text which are then concatenated to form a summary.",
+      "answer_tokens": 55,
+      "evidence_tokens": 655,
+      "latency_ms": 93.148,
+      "proposed_sentences": 2,
+      "question_id": "b65a83a24fc66728451bb063cf6ec50134c8bfb0",
+      "retrieval": {
+        "fused": {
+          "mrr": 0.1111,
+          "ndcg_at_5": 0.0,
+          "precision_at_5": 0.0,
+          "recall_at_5": 0.0
+        },
+        "reranked": {
+          "mrr": 0.5,
+          "ndcg_at_5": 0.3869,
+          "precision_at_5": 0.2,
+          "recall_at_5": 0.5
+        }
+      },
+      "stage_ms": {
+        "rerank_ms": 86.501,
+        "retrieve_ms": 6.066,
+        "verify_ms": 0.214
+      },
+      "supported_sentences": 2,
+      "text_metrics": {
+        "bleu": 0.0198,
+        "meteor": 0.2074,
+        "rouge1": 0.2466,
+        "rouge2": 0.0563,
+        "rougeL": 0.186,
+        "token_f1": 0.2093
+      },
+      "unanswerable": false
+    },
+    {
+      "abstain_reason": null,
+      "abstained": false,
+      "answer": "To address this issue, we extract the structured answer-relevant relations from sentences and propose a method to jointly model such structured relation and the unstructured sentence for question generation. Presumably, our structured answer-relevant relation is a generalization of the context explored by the proximity-based methods because they can only capture short dependencies around answer fragments while our extractions can capture both short and long dependencies given the answer fragments.",
+      "answer_tokens": 69,
+      "evidence_tokens": 966,
+      "latency_ms": 187.548,
+      "proposed_sentences": 2,
+      "question_id": "1d197cbcac7b3f4015416f0152a6692e881ada6c",
+      "retrieval": {
+        "fused": {
+          "mrr": 1.0,
+          "ndcg_at_5": 0.8772,
+          "precision_at_5": 0.4,
+          "recall_at_5": 1.0
+        },
+        "reranked": {
+          "mrr": 1.0,
+          "ndcg_at_5": 0.9197,
+          "precision_at_5": 0.4,
+          "recall_at_5": 1.0
+        }
+      },
+      "stage_ms": {
+        "rerank_ms": 181.555,
+        "retrieve_ms": 5.26,
+        "verify_ms": 0.232
+      },
+      "supported_sentences": 2,
+      "text_metrics": {
+        "bleu": 0.0137,
+        "meteor": 0.2153,
+        "rouge1": 0.1395,
+        "rouge2": 0.0238,
+        "rougeL": 0.1395,
+        "token_f1": 0.1395
+      },
+      "unanswerable": false
+    },
+    {
+      "abstain_reason": null,
+      "abstained": false,
+      "answer": "In the evaluations on the SQuAD dataset, our system achieves significant and consistent improvement as compared to all baseline methods. In particular, we demonstrate that the improvement is more significant with a larger relative distance between the answer and other non-stop sentence words that also appear in the ground truth question.",
+      "answer_tokens": 51,
+      "evidence_tokens": 75,
+      "latency_ms": 187.444,
+      "proposed_sentences": 2,
+      "question_id": "92294820ac0d9421f086139e816354970f066d8a",
+      "retrieval": {
+        "fused": {
+          "mrr": 0.3333,
+          "ndcg_at_5": 0.5,
+          "precision_at_5": 0.2,
+          "recall_at_5": 1.0
+        },
+        "reranked": {
+          "mrr": 0.3333,
+          "ndcg_at_5": 0.5,
+          "precision_at_5": 0.2,
+          "recall_at_5": 1.0
+        }
+      },
+      "stage_ms": {
+        "rerank_ms": 182.66,
+        "retrieve_ms": 4.563,
+        "verify_ms": 0.147
+      },
+      "supported_sentences": 2,
+      "text_metrics": {
+        "bleu": 0.0192,
+        "meteor": 0.1264,
+        "rouge1": 0.1505,
+        "rouge2": 0.022,
+        "rougeL": 0.129,
+        "token_f1": 0.1505
+      },
+      "unanswerable": false
+    },
+    {
+      "abstain_reason": null,
+      "abstained": false,
+      "answer": "We evaluate with all commonly-used metrics in question generation BIBREF13: BLEU-1 (B1), BLEU-2 (B2), BLEU-3 (B3), BLEU-4 (B4) BIBREF17, METEOR (MET) BIBREF18 and ROUGE-L (R-L) BIBREF19. We use the evaluation script released by Chen2015MicrosoftCC.",
+      "answer_tokens": 34,
+      "evidence_tokens": 34,
+      "latency_ms": 114.898,
+      "proposed_sentences": 2,
+      "question_id": "477d9d3376af4d938bb01280fe48d9ae7c9cf7f7",
+      "retrieval": {
+        "fused": {
+          "mrr": 1.0,
+          "ndcg_at_5": 1.0,
+          "precision_at_5": 0.2,
+          "recall_at_5": 1.0
+        },
+        "reranked": {
+          "mrr": 1.0,
+          "ndcg_at_5": 1.0,
+          "precision_at_5": 0.2,
+          "recall_at_5": 1.0
+        }
+      },
+      "stage_ms": {
+        "rerank_ms": 104.198,
+        "retrieve_ms": 10.534,
+        "verify_ms": 0.107
+      },
+      "supported_sentences": 2,
+      "text_metrics": {
+        "bleu": 0.5184,
+        "meteor": 0.9205,
+        "rouge1": 0.6984,
+        "rouge2": 0.6885,
+        "rougeL": 0.6984,
+        "token_f1": 0.6984
+      },
+      "unanswerable": false
+    },
+    {
+      "abstain_reason": null,
+      "abstained": false,
+      "answer": "We conduct experiments on the SQuAD dataset BIBREF3.",
+      "answer_tokens": 8,
+      "evidence_tokens": 120,
+      "latency_ms": 159.345,
+      "proposed_sentences": 1,
+      "question_id": "f225a9f923e4cdd836dd8fe097848da06ec3e0cc",
+      "retrieval": {
+        "fused": {
+          "mrr": 1.0,
+          "ndcg_at_5": 0.6131,
+          "precision_at_5": 0.2,
+          "recall_at_5": 0.5
+        },
+        "reranked": {
+          "mrr": 1.0,
+          "ndcg_at_5": 0.6131,
+          "precision_at_5": 0.2,
+          "recall_at_5": 0.5
+        }
+      },
+      "stage_ms": {
+        "rerank_ms": 154.431,
+        "retrieve_ms": 4.705,
+        "verify_ms": 0.106
+      },
+      "supported_sentences": 1,
+      "text_metrics": {
+        "bleu": 0.0552,
+        "meteor": 0.2941,
+        "rouge1": 0.2222,
+        "rouge2": 0.0,
+        "rougeL": 0.2222,
+        "token_f1": 0.2222
+      },
+      "unanswerable": false
+    },
+    {
+      "abstain_reason": "weak_evidence",
+      "abstained": true,
+      "answer": "",
+      "answer_tokens": 0,
+      "evidence_tokens": 0,
+      "latency_ms": 129.152,
+      "proposed_sentences": 0,
+      "question_id": "6424e442b34a576f904d9649d63acf1e4fdefdfc",
+      "retrieval": {
+        "fused": {
+          "mrr": 0.0714,
+          "ndcg_at_5": 0.0,
+          "precision_at_5": 0.0,
+          "recall_at_5": 0.0
+        },
+        "reranked": {
+          "mrr": 0.25,
+          "ndcg_at_5": 0.4307,
+          "precision_at_5": 0.2,
+          "recall_at_5": 1.0
+        }
+      },
+      "stage_ms": {
+        "rerank_ms": 124.03,
+        "retrieve_ms": 5.11
+      },
+      "supported_sentences": 0,
+      "unanswerable": false
+    },
+    {
+      "abstain_reason": null,
+      "abstained": false,
+      "answer": "In this section, we introduce an invertibility condition for our neural projector to tackle the optimization challenge. Under the invertibility condition, we derive a learning algorithm and give another view of our approach revealed by the objective function.",
+      "answer_tokens": 38,
+      "evidence_tokens": 329,
+      "latency_ms": 74.705,
+      "proposed_sentences": 2,
+      "question_id": "887c6727e9f25ade61b4853a869fe712fe0b703d",
+      "retrieval": {
+        "fused": {
+          "mrr": 0.3333,
+          "ndcg_at_5": 0.5,
+          "precision_at_5": 0.2,
+          "recall_at_5": 1.0
+        },
+        "reranked": {
+          "mrr": 1.0,
+          "ndcg_at_5": 1.0,
+          "precision_at_5": 0.2,
+          "recall_at_5": 1.0
+        }
+      },
+      "stage_ms": {
+        "rerank_ms": 68.015,
+        "retrieve_ms": 6.232,
+        "verify_ms": 0.235
+      },
+      "supported_sentences": 2,
+      "text_metrics": {
+        "bleu": 0.0429,
+        "meteor": 0.3431,
+        "rouge1": 0.1923,
+        "rouge2": 0.08,
+        "rougeL": 0.1923,
+        "token_f1": 0.1923
+      },
+      "unanswerable": false
+    },
+    {
+      "abstain_reason": null,
+      "abstained": false,
+      "answer": "Second, by interacting with users, it augments the resources with structured and to some extent labeled training data. Conversational agents that can interact with users in a natural language are potential application for IPA systems.",
+      "answer_tokens": 35,
+      "evidence_tokens": 155,
+      "latency_ms": 89.188,
+      "proposed_sentences": 2,
+      "question_id": "ca5a82b54cb707c9b947aa8445aac51ea218b23a",
+      "retrieval": {
+        "fused": {
+          "mrr": 0.0714,
+          "ndcg_at_5": 0.0,
+          "precision_at_5": 0.0,
+          "recall_at_5": 0.0
+        },
+        "reranked": {
+          "mrr": 0.2,
+          "ndcg_at_5": 0.1312,
+          "precision_at_5": 0.2,
+          "recall_at_5": 0.1667
+        }
+      },
+      "stage_ms": {
+        "rerank_ms": 81.6,
+        "retrieve_ms": 7.247,
+        "verify_ms": 0.23
+      },
+      "supported_sentences": 2,
+      "text_metrics": {
+        "bleu": 0.0145,
+        "meteor": 0.1394,
+        "rouge1": 0.2373,
+        "rouge2": 0.0,
+        "rougeL": 0.1039,
+        "token_f1": 0.1695
+      },
+      "unanswerable": false
+    },
+    {
+      "abstain_reason": null,
+      "abstained": false,
+      "answer": "Our proposed system brings two significant benefits: First, it reduces repetitive and time-consuming activities and, therefore, allows workers to focus on more intelligent processes. Intelligent Process Automation (IPA) is an emerging technology with a primary goal to assist the knowledge worker by taking care of repetitive, routine and low-cognitive tasks.",
+      "answer_tokens": 50,
+      "evidence_tokens": 155,
+      "latency_ms": 149.23,
+      "proposed_sentences": 2,
+      "question_id": "da55bd769721b878dd17f07f124a37a0a165db02",
+      "retrieval": {
+        "fused": {
+          "mrr": 0.125,
+          "ndcg_at_5": 0.0,
+          "precision_at_5": 0.0,
+          "recall_at_5": 0.0
+        },
+        "reranked": {
+          "mrr": 0.1429,
+          "ndcg_at_5": 0.0,
+          "precision_at_5": 0.0,
+          "recall_at_5": 0.0
+        }
+      },
+      "stage_ms": {
+        "rerank_ms": 123.066,
+        "retrieve_ms": 25.748,
+        "verify_ms": 0.291
+      },
+      "supported_sentences": 2,
+      "text_metrics": {
+        "bleu": 0.011,
+        "meteor": 0.0842,
+        "rouge1": 0.1212,
+        "rouge2": 0.0,
+        "rougeL": 0.0606,
+        "token_f1": 0.1212
+      },
+      "unanswerable": false
+    },
+    {
+      "abstain_reason": "weak_evidence",
+      "abstained": true,
+      "answer": "",
+      "answer_tokens": 0,
+      "evidence_tokens": 0,
+      "latency_ms": 347.987,
+      "proposed_sentences": 0,
+      "question_id": "de0b650022ad8693465242ded169313419eed7d9",
+      "stage_ms": {
+        "rerank_ms": 137.24,
+        "retrieve_ms": 210.734
+      },
+      "supported_sentences": 0,
+      "unanswerable": true
+    },
+    {
+      "abstain_reason": null,
+      "abstained": false,
+      "answer": "First, we consider the translation for an under-resourced pair of languages. Our approach has shown its effectiveness in an under-resourced translation scenario with considerable improvements up to 2.6 BLEU points.",
+      "answer_tokens": 30,
+      "evidence_tokens": 626,
+      "latency_ms": 127.092,
+      "proposed_sentences": 2,
+      "question_id": "41ac23e32bf208b69414f4b687c4f324c6132464",
+      "retrieval": {
+        "fused": {
+          "mrr": 1.0,
+          "ndcg_at_5": 1.0,
+          "precision_at_5": 0.2,
+          "recall_at_5": 1.0
+        },
+        "reranked": {
+          "mrr": 1.0,
+          "ndcg_at_5": 1.0,
+          "precision_at_5": 0.2,
+          "recall_at_5": 1.0
+        }
+      },
+      "stage_ms": {
+        "rerank_ms": 120.964,
+        "retrieve_ms": 5.601,
+        "verify_ms": 0.23
+      },
+      "supported_sentences": 2,
+      "text_metrics": {
+        "bleu": 0.0148,
+        "meteor": 0.0893,
+        "rouge1": 0.125,
+        "rouge2": 0.0,
+        "rougeL": 0.0833,
+        "token_f1": 0.125
+      },
+      "unanswerable": false
+    },
+    {
+      "abstain_reason": null,
+      "abstained": false,
+      "answer": "Training attention with alignments in this case will force the attention model to forget these useful information. We show that attention is different from alignment in some cases and is capturing useful information other than alignments.",
+      "answer_tokens": 36,
+      "evidence_tokens": 383,
+      "latency_ms": 114.783,
+      "proposed_sentences": 2,
+      "question_id": "beac555c4aea76c88f19db7cc901fa638765c250",
+      "retrieval": {
+        "fused": {
+          "mrr": 1.0,
+          "ndcg_at_5": 0.4693,
+          "precision_at_5": 0.2,
+          "recall_at_5": 0.3333
+        },
+        "reranked": {
+          "mrr": 1.0,
+          "ndcg_at_5": 0.4693,
+          "precision_at_5": 0.2,
+          "recall_at_5": 0.3333
+        }
+      },
+      "stage_ms": {
+        "rerank_ms": 104.59,
+        "retrieve_ms": 9.709,
+        "verify_ms": 0.254
+      },
+      "supported_sentences": 2,
+      "text_metrics": {
+        "bleu": 0.0167,
+        "meteor": 0.2047,
+        "rouge1": 0.2745,
+        "rouge2": 0.0,
+        "rougeL": 0.1176,
+        "token_f1": 0.2353
+      },
+      "unanswerable": false
+    },
+    {
+      "abstain_reason": null,
+      "abstained": false,
+      "answer": "We use the Triplet Objective, train SBERT for one epoch on the about 1.8 Million training triplets and evaluate it on the 222,957 test triplets. We used a batch-size of 16, Adam optimizer with learning rate $2\\mathrm {e}{-5}$, and a linear learning rate warm-up over 10% of the training data.",
+      "answer_tokens": 53,
+      "evidence_tokens": 339,
+      "latency_ms": 112.506,
+      "proposed_sentences": 2,
+      "question_id": "596aede2b311deb8cb0a82d2e7de314ef6e83e4e",
+      "stage_ms": {
+        "rerank_ms": 106.286,
+        "retrieve_ms": 5.805,
+        "verify_ms": 0.199
+      },
+      "supported_sentences": 2,
+      "unanswerable": true
+    },
+    {
+      "abstain_reason": "weak_evidence",
+      "abstained": true,
+      "answer": "",
+      "answer_tokens": 0,
+      "evidence_tokens": 0,
+      "latency_ms": 65.983,
+      "proposed_sentences": 0,
+      "question_id": "6c96e910bd98c9fd58ba2050f99b9c9bac69840a",
+      "stage_ms": {
+        "rerank_ms": 58.657,
+        "retrieve_ms": 7.315
+      },
+      "supported_sentences": 0,
+      "unanswerable": true
+    },
+    {
+      "abstain_reason": "weak_evidence",
+      "abstained": true,
+      "answer": "",
+      "answer_tokens": 0,
+      "evidence_tokens": 0,
+      "latency_ms": 76.41,
+      "proposed_sentences": 0,
+      "question_id": "71e4ba4e87e6596aeca187127c0d088df6570c57",
+      "stage_ms": {
+        "rerank_ms": 67.518,
+        "retrieve_ms": 8.88
+      },
+      "supported_sentences": 0,
+      "unanswerable": true
+    },
+    {
+      "abstain_reason": null,
+      "abstained": false,
+      "answer": "However, the converted singing voice can be easily out of key, showing that the existing approach can not model the pitch information precisely. We also demonstrate that the pitch of converted singing can be easily controlled during generation by changing the levels of extracted pitch before passing it to the decoder network.",
+      "answer_tokens": 52,
+      "evidence_tokens": 174,
+      "latency_ms": 109.809,
+      "proposed_sentences": 2,
+      "question_id": "bfbd6040cb95b179118557352e8e3899ef25c525",
+      "stage_ms": {
+        "rerank_ms": 101.735,
+        "retrieve_ms": 7.531,
+        "verify_ms": 0.375
+      },
+      "supported_sentences": 2,
+      "unanswerable": true
+    },
+    {
+      "abstain_reason": "weak_evidence",
+      "abstained": true,
+      "answer": "",
+      "answer_tokens": 0,
+      "evidence_tokens": 0,
+      "latency_ms": 107.325,
+      "proposed_sentences": 0,
+      "question_id": "6f024d4c952fbb53b6f8cf27020659aa4d9a6590",
+      "stage_ms": {
+        "rerank_ms": 99.864,
+        "retrieve_ms": 7.449
+      },
+      "supported_sentences": 0,
+      "unanswerable": true
+    }
+  ]
+}

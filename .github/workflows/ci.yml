@@ -32,10 +32,11 @@ jobs:
           pip install -e libs/common
           pip install -e services/query
           pip install -e services/eval
+          pip install -e services/ingest
 
       - name: Install dev dependencies
         run: |
-          pip install ruff mypy pytest pytest-asyncio pydantic
+          pip install ruff mypy pytest pytest-asyncio httpx
 
       - name: Lint (ruff)
         run: |
