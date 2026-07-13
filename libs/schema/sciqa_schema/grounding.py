@@ -23,6 +23,7 @@ class EvidenceChunk(BaseModel):
     doc_id: str
     text: str
     score: float = 0.0
+    chunk_type: str = "text"
     section_path: list[str] = Field(default_factory=list)
     page_start: int | None = None
 

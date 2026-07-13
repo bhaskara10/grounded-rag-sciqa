@@ -3,35 +3,33 @@ Query service.
 
 Endpoints
 ---------
-POST /qa        grounded Q&A with sentence-level citations
+POST /qa        grounded Q&A with span-level citations
 POST /retrieve  retrieval only (for eval / inspection)
 POST /explain   retrieval trace + reranker scores (no answer generated)
 
 Per-request pipeline
 --------------------
-1. Query normalisation + optional classification
-2. Hybrid retrieval — BM25 + dense via OpenSearch hybrid pipeline
-3. Metadata filters — gated on is_enriched_searchable flag
-4. Cross-encoder reranking (top 50-100 candidates)
-5. Adaptive evidence selection (score threshold + token budget + diversity)
-6. Structured JSON generation via vLLM
-7. Sentence-level attribution
-8. Abstention check
-9. Return QAResponse (answer + citations) or abstention notice
+1. Hybrid retrieval — Okapi BM25 + bi-encoder dense search, RRF-fused
+2. Cross-encoder reranking of the fused candidates
+3. Adaptive evidence selection (score threshold + token budget)
+4. Extractive answer proposal (LLM generator plugs in behind the same
+   Answerer protocol)
+5. Grounding verification with span-level attribution
+6. Return QAResponse (answer + verbatim evidence spans) or abstention
 
 Grounding contract
 ------------------
-Every factual sentence MUST have at least one supporting_chunk_id.
-If attribution cannot be completed for a sentence:
-  a) rewrite as uncertainty, OR
-  b) set abstained = True for the whole response.
+Every factual sentence MUST have at least one supporting chunk, and the
+verifier localizes the exact evidence characters that support it. If
+attribution cannot be completed for any sentence, the whole response is
+abstained — a system decision, not a prompt instruction.
 
-Abstention triggers (system decision, not prompt)
-  - top reranker score below threshold
-  - evidence set too small
-  - evidence clusters disagree
-  - no sentence-level attribution completable
-  - required facts not found in retrieved context
+Abstention triggers
+  - no candidates retrieved
+  - no reranked chunk clears the selection threshold (weak evidence)
+  - no extractable answer sentence
+  - grounding verification failed (missing citation, unknown chunk,
+    numeric claim absent from evidence, insufficient span coverage)
 """
 import logging
 from contextlib import asynccontextmanager
@@ -39,6 +37,14 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from .core.factory import (
+    config_from_env,
+    encoder_from_env,
+    index_dir_from_env,
+    load_indexed_pipeline,
+    reranker_from_env,
+)
+from .core.index_store import LocalIndexStore
 from .routes.explain import router as explain_router
 from .routes.qa import router as qa_router
 from .routes.retrieve import router as retrieve_router
@@ -50,7 +56,17 @@ logger = logging.getLogger(__name__)
 @asynccontextmanager
 async def lifespan(app: FastAPI):  # type: ignore[type-arg]
     logger.info("query-service starting")
-    # TODO: init OpenSearch client, embedding client, reranker, vLLM client
+    app.state.encoder = encoder_from_env()
+    app.state.reranker = reranker_from_env()
+    app.state.config = config_from_env()
+    store = LocalIndexStore(index_dir_from_env())
+    app.state.pipeline = load_indexed_pipeline(
+        store, app.state.encoder, app.state.reranker, app.state.config
+    )
+    if app.state.pipeline is None:
+        logger.info("no persistent index at %s — /qa accepts inline passages", store.root)
+    else:
+        logger.info("loaded index from %s", store.root)
     yield
     logger.info("query-service stopping")
 
