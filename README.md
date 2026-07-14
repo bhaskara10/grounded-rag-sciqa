@@ -1,6 +1,6 @@
 # grounded-rag-sciqa
 
-[![CI](https://github.com/bhaskara10/grounded-rag-sciqa/actions/workflows/ci.yml/badge.svg)](https://github.com/bhaskara10/grounded-rag-sciqa/actions/workflows/ci.yml)
+[![CI](https://github.com/arun-kalyaanasundaram/grounded-rag-sciqa/actions/workflows/ci.yml/badge.svg)](https://github.com/arun-kalyaanasundaram/grounded-rag-sciqa/actions/workflows/ci.yml)
 
 RAG over scientific papers that has to prove its answers. Every sentence the
 system returns comes with an exact quote from the source (chunk id + character
