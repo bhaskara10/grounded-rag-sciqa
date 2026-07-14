@@ -22,6 +22,10 @@ every sentence passes verification against the retrieved evidence. Otherwise
 the caller gets an explicit abstention plus the closest passages, which is more
 useful than a confident guess.
 
+Scope note: this is pure single-pass RAG, not an agentic system — one
+retrieval, one rerank, one answer attempt, one verification. No query
+rewriting or retry loops, which keeps every stage's contribution measurable.
+
 ## How it works
 
 ```
@@ -84,34 +88,45 @@ unanswerable, 18 papers). The artifact is committed at
 [results/qasper_subset_v1.json](results/qasper_subset_v1.json) and one command
 regenerates it (below). Run on an M4 MacBook Pro.
 
-Retrieval, against gold evidence paragraphs:
+Retrieval, against gold evidence paragraphs. Both rankings are scored from
+the same requests, so the reranker column is a controlled comparison:
 
 | Ranking | P@5 | R@5 | MRR | nDCG@5 |
 |---|---|---|---|---|
 | hybrid (BM25 + dense, RRF) | 0.165 | 0.534 | 0.533 | 0.455 |
 | after cross-encoder rerank | 0.200 | 0.647 | 0.650 | 0.558 |
+| *reranker lift (relative)* | *+21%* | *+21%* | *+22%* | *+23%* |
 
-The harness scores both rankings from the same request specifically so the
-reranker's contribution is measurable, and it does help across the board.
+Two things to know before judging these. First, P@5 has a low ceiling here:
+questions average only 1.9 gold paragraphs, so perfect retrieval would score
+0.375 — we're at 53% of the ceiling. MRR 0.650 is the clearer signal: gold
+evidence typically ranks 1st or 2nd out of ~45 paragraphs. Second, the +21–23%
+reranker lift is the most trustworthy number in the artifact because it's a
+paired comparison on identical requests.
 
 Answer quality (only answered questions, vs QASPER's mostly abstractive gold
 answers): ROUGE-1 0.232, ROUGE-L 0.198, BLEU 0.088, METEOR 0.280, token F1
-0.214. These are modest, which is what you'd expect from an extractive
-answerer scored against human-written answers — a generative answerer should
-lift these considerably.
+0.214. Low, and mostly a format mismatch rather than a comprehension failure:
+gold answers are short phrases, this system returns whole quoted sentences.
+A generative answerer would lift these a lot; it would do nothing for the
+retrieval numbers — that split is worked through in the analysis doc below.
 
-Grounding and abstention: published answers have a 0% unsupported-claim rate,
-but that's by construction (unsupported answers don't publish), so the honest
-numbers to watch are the abstention ones. The system answered 67.5% of
-answerable questions and caught 6 of the 10 unanswerable ones. Abstention
-precision is 0.32 — it's too trigger-happy on hard-but-answerable questions.
-That's the weakest number in the artifact and the clearest tuning target
-(`SCIQA_MIN_RERANK_SCORE` trades answer rate against abstention recall).
+Abstention: the system answered 67.5% of answerable questions and caught 6 of
+10 unanswerable ones. Abstention precision is 0.32, the weakest number here —
+though on only 19 abstention events its 95% CI is [0.15, 0.54], so read it as
+"low, probably." Diagnosis: all 13 wrong abstentions share one cause (the
+selection threshold, tuned for web-search score distributions, is too strict
+for scientific prose), which makes this a calibration problem, not a design
+problem.
 
 Latency: p50 126 ms, p95 478 ms end to end; reranking dominates (~199 ms mean).
 
-Methodology details, including how the dataset was built:
-[docs/evaluation_methodology.md](docs/evaluation_methodology.md).
+Two companion docs if you're running similar experiments:
+[docs/metrics_analysis.md](docs/metrics_analysis.md) — why each number is
+where it is, what moves which metric, whether a better LLM helps (split by
+metric group), and how the 50-question sample size affects the error bars.
+[docs/evaluation_methodology.md](docs/evaluation_methodology.md) — how the
+dataset and metrics are defined.
 
 ## Project status
 
@@ -133,8 +148,11 @@ verifier is purely lexical.
 2. **NLI on top of the lexical verifier.** Token overlap misses legitimate
    paraphrase support and can be fooled by coincidental overlap; a small
    entailment model would tighten both sides.
-3. **Abstention calibration.** The 0.32 precision above; probably per-question
-   thresholds or a calibration set rather than one global number.
+3. **Abstention calibration.** All 13 wrong abstentions trace to the global
+   0.5 threshold; a sweep on a held-out split (likely landing near 0.3–0.4)
+   or Platt-scaling the reranker scores should fix most of it. Also worth
+   scaling the eval set up (the build script can emit hundreds of questions)
+   so the abstention numbers get real error bars.
 4. **OpenSearch backend** behind the existing index interface, for corpora
    that don't fit one machine.
 5. **Richer parsing** (Docling/GROBID) for references and cleaner section
